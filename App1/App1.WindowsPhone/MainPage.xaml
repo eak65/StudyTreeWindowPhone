@@ -1,0 +1,74 @@
+﻿<Page
+    x:Class="App1.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:App1"
+     xmlns:drawerLayout="using:DrawerLayout"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid x:Name="TitleBar" Background="#00ADEF"  Grid.Row ="0" Height="Auto">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Image Margin="5"  x:Name="DrawerIcon"  Grid.Column="0" Source="/Assets/ic_drawer.png" HorizontalAlignment="Left" Tapped="DrawerIcon_Tapped"  />
+            <TextBlock Grid.Column="1" Text="StudyTree : Branch Out!" Foreground="White" VerticalAlignment="Center" FontSize="18"/>
+        </Grid>
+
+        <drawerLayout:DrawerLayout Grid.Row="1" x:Name="DrawerLayout">
+            <Grid x:Name="MainFragment" Background="White">
+
+                <!-- main Drwawer goes here -->
+            </Grid>
+            <Grid x:Name="ListFragment" Background="Turquoise">
+                <ScrollViewer>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="50"/>
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="0" Background="Transparent" Tapped="ProfileTextBlock_Tapped">
+                            <Border BorderBrush="#FFE0E0E0" BorderThickness="0 0 0 1" />
+                            <StackPanel Margin="10 10 0 5" VerticalAlignment="Bottom">
+                                <TextBlock Name="ProfileTextBlock" FontSize="21"  Text="Profile" />
+                            </StackPanel>
+                        </Grid>
+                        <Grid Grid.Row="1" Background="Transparent"  Tapped="StudentTextBlock_Tapped">
+                            <Border BorderBrush="#FFE0E0E0" BorderThickness="0 0 0 1" />
+                            <StackPanel Margin="10 10 0 5" VerticalAlignment="Bottom">
+                                <TextBlock Name="StudentTextBlock" FontSize="21"  Text="Student"/>
+                            </StackPanel>
+                        </Grid>
+                        <Grid Grid.Row="2" Background="Transparent" Tapped="TutorTextBlock_Tapped" HorizontalAlignment="Left" Width="400">
+                            <Border BorderBrush="#FFE0E0E0" BorderThickness="0 0 0 1" />
+                            <StackPanel Margin="10 10 0 5" VerticalAlignment="Bottom">
+
+                                <TextBlock Name="TutorTextBlock" FontSize="21"  Text="Tutor" />
+                            </StackPanel>
+                        </Grid>
+                        <Grid Grid.Row="3" Background="Transparent" Tapped="SettingTextBlock_Tapped">
+                            <Border BorderBrush="#FFE0E0E0" BorderThickness="0 0 0 1" />
+                            <StackPanel Margin="10 10 0 5" VerticalAlignment="Bottom">
+
+                                <TextBlock Name="SettingTextBlock" FontSize="21"   Text="Setting" />
+                            </StackPanel>
+                        </Grid>
+                       
+                    </Grid>
+                </ScrollViewer>
+            </Grid>
+        </drawerLayout:DrawerLayout>
+    </Grid>
+</Page>
