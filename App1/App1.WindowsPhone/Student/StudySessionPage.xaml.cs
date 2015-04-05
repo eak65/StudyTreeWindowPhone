@@ -1,10 +1,6 @@
 ﻿using App1.Common;
-using App1.Model;
-using App1.Student;
-using HubApp1.Data;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -22,27 +18,28 @@ using Windows.UI.Xaml.Navigation;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkID=390556
 
-namespace App1
+namespace App1.Student
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MainPage : Page
+    public sealed partial class StudySessionPage : Page
     {
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
 
-        public MainPage()
+        public StudySessionPage()
         {
-           this.InitializeComponent();
-           this.NavigationCacheMode = NavigationCacheMode.Required;
+            this.InitializeComponent();
 
-           this.navigationHelper = new NavigationHelper(this);
-           this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
-           this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
-          
+            this.navigationHelper = new NavigationHelper(this);
+            this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
+            this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
         }
 
+        /// <summary>
+        /// Gets the <see cref="NavigationHelper"/> associated with this <see cref="Page"/>.
+        /// </summary>
         public NavigationHelper NavigationHelper
         {
             get { return this.navigationHelper; }
@@ -57,12 +54,19 @@ namespace App1
             get { return this.defaultViewModel; }
         }
 
-        private async  void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
+        /// <summary>
+        /// Populates the page with content passed during navigation.  Any saved state is also
+        /// provided when recreating a page from a prior session.
+        /// </summary>
+        /// <param name="sender">
+        /// The source of the event; typically <see cref="NavigationHelper"/>
+        /// </param>
+        /// <param name="e">Event data that provides both the navigation parameter passed to
+        /// <see cref="Frame.Navigate(Type, Object)"/> when this page was initially requested and
+        /// a dictionary of state preserved by this page during an earlier
+        /// session.  The state will be null the first time a page is visited.</param>
+        private void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-
-          
-          var sampleDataGroups = await SampleDataSource.GetGroupsAsync();
-           this.DefaultViewModel["Groups"] = sampleDataGroups;
         }
 
         /// <summary>
@@ -75,9 +79,23 @@ namespace App1
         /// serializable state.</param>
         private void NavigationHelper_SaveState(object sender, SaveStateEventArgs e)
         {
-            // TODO: Save the unique state of the page here.
         }
 
+        #region NavigationHelper registration
+
+        /// <summary>
+        /// The methods provided in this section are simply used to allow
+        /// NavigationHelper to respond to the page's navigation methods.
+        /// <para>
+        /// Page specific logic should be placed in event handlers for the  
+        /// <see cref="NavigationHelper.LoadState"/>
+        /// and <see cref="NavigationHelper.SaveState"/>.
+        /// The navigation parameter is available in the LoadState method 
+        /// in addition to page state preserved during an earlier session.
+        /// </para>
+        /// </summary>
+        /// <param name="e">Provides data for navigation methods and event
+        /// handlers that cannot cancel the navigation request.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedTo(e);
@@ -88,49 +106,6 @@ namespace App1
             this.navigationHelper.OnNavigatedFrom(e);
         }
 
-
-        private void GridView_ItemClick(object sender, ItemClickEventArgs e)
-        {
-
-        }
-
-        private void ListView_ItemClick(object sender, ItemClickEventArgs e)
-        {
-
-        }
-
-        private void LearnSection_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            Type selectionPage = null;
-            var itemId = ((SampleDataItem)e.ClickedItem).UniqueId;
-            if(itemId.Equals("1"))
-            {
-                selectionPage = typeof(StudentProfilePage);
-            }
-            else if (itemId.Equals("2"))
-            {
-                selectionPage = typeof(StudySessionPage);
-
-            }
-            else if (itemId.Equals("3"))
-            {
-                selectionPage = typeof(StudentNotificationsPage);
-
-            }
-            Frame.Navigate(selectionPage, itemId);
-     
-        }
-
-        private void TeachSection_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            var itemId = ((SampleDataItem)e.ClickedItem).UniqueId;
-
-        }
-
-     
-
-
-
-  
+        #endregion
     }
 }
