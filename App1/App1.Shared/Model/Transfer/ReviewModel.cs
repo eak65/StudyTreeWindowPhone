@@ -4,7 +4,7 @@ using System.Text;
 
 namespace App1.Model.Transfer
 {
-    class ReviewModel
+    public class ReviewModel
     {
         public int UserId;
         public int SessionId;

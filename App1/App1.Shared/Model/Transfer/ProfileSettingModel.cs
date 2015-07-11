@@ -4,7 +4,7 @@ using System.Text;
 
 namespace App1.Model.Transfer
 {
-    class ProfileSettingModel
+    public class ProfileSettingModel
     {
         public String Firstname;
     public String Lastname;
