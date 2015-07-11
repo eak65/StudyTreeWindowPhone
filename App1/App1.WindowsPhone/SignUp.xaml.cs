@@ -16,6 +16,8 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using App1.Common;
+using App1.Model.Transfer;
+using App1.Model.Logic;
 using App1.Model;
 using System.Threading.Tasks;
 using System.Net.Http;
@@ -145,6 +147,7 @@ namespace App1
 
         }
 
+        public 
         void client_DataReceivedHandler(object sender, EventArgs e)
         {
            HttpResponseMessage s = (HttpResponseMessage)sender;

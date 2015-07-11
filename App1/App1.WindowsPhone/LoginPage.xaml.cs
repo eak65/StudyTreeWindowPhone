@@ -1,4 +1,5 @@
-﻿using System;
+﻿using App1.Model.Logic;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -26,7 +27,7 @@ namespace App1
         public LoginPage()
         {
             this.InitializeComponent();
-            
+           
             this.NavigationCacheMode = NavigationCacheMode.Required;
         }
 
@@ -67,6 +68,7 @@ namespace App1
             HttpResponseMessage s = (HttpResponseMessage)sender;
             if (s.StatusCode == System.Net.HttpStatusCode.OK)
             {
+                Merchant m = new Merchant();
                 Frame.Navigate(typeof(MainPage));
             }
             // this event trigger when your web request complete.

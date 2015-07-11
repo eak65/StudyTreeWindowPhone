@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Diagnostics;
+using Windows.ApplicationModel.Activation;
+using RestSharp.Portable;
+
 namespace App1
 {
 
@@ -22,15 +25,24 @@ namespace App1
             private static string mainUrl ="http://studytree2.azurewebsites.net/api/";
             public event EventHandler DataReceivedHandler = null;
 
+            public void updateInformation()
+            {
+                var client = new RestClient("http://studytree2.azurewebsites.net");
+                var request = new RestRequest("/api/profile/Getupdates",HttpMethod.Get);
 
-            public async Task CreatePerson(CreatePerson person)
+                //IRestResponse response = client.Execute(request);
+
+
+            }
+            public async Task CreatePerson(App1.Model.Logic.CreatePerson person)
             {
                 using (var client = new HttpClient())
                 {
                     client.BaseAddress = new Uri(mainUrl);
                     client.DefaultRequestHeaders.Accept.Clear();
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
+                   
+                
                     HttpResponseMessage response;
                     // HTTP POST
 
