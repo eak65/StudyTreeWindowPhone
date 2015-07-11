@@ -46,7 +46,7 @@ namespace App1
                     UpdateModel updateModel = response.Data;
                     DataManager.shared().update(updateModel);
                 }
-                DataReceivedHandler(response, null);
+             //   DataReceivedHandler(response, null);
             }
 
             public async void postFee(int fee)
@@ -167,10 +167,14 @@ namespace App1
                        var response=  client.Execute<IList<SubjectModel>>(request);
             }
 
-            public async void getLoginInformation()
+            public async void putLoginInformation( LoginModel model)
             {
-                var request = getRequest("/api/Profile/Login", HttpMethod.Get);
-                var response = client.Execute<IList<SubjectModel>>(request);
+            
+                var request = getRequest("/api/Profile/Login", HttpMethod.Put);
+                IRestResponse<LoginResponse> response = await client.Execute<LoginResponse>(request);
+                LoginResponse updateModel = response.Data;
+                DataManager.shared().myself.updateAccountInformation(updateModel);
+
             }
 /*
  *              NEED SLEEP BEFORE FINISHING

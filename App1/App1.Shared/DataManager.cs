@@ -27,6 +27,7 @@ namespace App1
          return dataManager;
         }
 
+      
         public void update(UpdateModel updateModel)
         {
 
@@ -51,6 +52,7 @@ namespace App1
             SignalR.SignalR signalR = new SignalR.SignalR(Constants.url);
             RequestHandler handler = new RequestHandler();
             handler.updateInformation();
+            handler.putLoginInformation(new LoginModel("POINT(39.9540 -75.1880)"));
         }
     }
  }

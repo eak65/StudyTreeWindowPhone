@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using App1.Model.Transfer;
 
 namespace App1.Model.Logic
 {
@@ -43,6 +44,16 @@ namespace App1.Model.Logic
             this.StudentNotificationList = new List<STNotification>();
             this.TutorNotificationList = new List<STNotification>();
 
+        }
+        public void updateAccountInformation(LoginResponse response)
+        {
+            FirstName = response.FirstName;
+            LastName = response.LastName;
+            Email = response.Email;
+            UserName = response.UserName;
+            ProfilePhotoUri = response.ProfilePhotoUri;
+            PersonId = response.PersonId;
+            Fee = response.Fee;
         }
     }
 }
