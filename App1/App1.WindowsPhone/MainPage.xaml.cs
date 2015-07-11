@@ -19,6 +19,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using App1.SignalR;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkID=390556
 
@@ -36,6 +37,7 @@ namespace App1
         {
            this.InitializeComponent();
            this.NavigationCacheMode = NavigationCacheMode.Required;
+            SignalR.SignalR signalR = new SignalR.SignalR(Constants.url);
 
            this.navigationHelper = new NavigationHelper(this);
            this.navigationHelper.LoadState += this.NavigationHelper_LoadState;

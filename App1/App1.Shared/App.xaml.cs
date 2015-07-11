@@ -98,6 +98,8 @@ namespace App1
                 var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
                 if (localSettings.Values.ContainsKey("token"))
                 {
+                    DataManager.shared().token =(string) localSettings.Values["token"];
+                    DataManager.shared().DidLogin(); 
                     if (!rootFrame.Navigate(typeof(MainPage), e.Arguments))
                     {
                         throw new Exception("Failed to create initial page");
@@ -116,6 +118,7 @@ namespace App1
             Window.Current.Activate();
         }
 
+   
 #if WINDOWS_PHONE_APP
         /// <summary>
         /// Restores the content transitions after the app has launched.

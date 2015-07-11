@@ -68,7 +68,7 @@ namespace App1
             HttpResponseMessage s = (HttpResponseMessage)sender;
             if (s.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                Merchant m = new Merchant();
+            
                 Frame.Navigate(typeof(MainPage));
             }
             // this event trigger when your web request complete.

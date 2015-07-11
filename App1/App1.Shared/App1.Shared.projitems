@@ -15,7 +15,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="$(MSBuildThisFileDirectory)Class.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Logic\Person.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RequestHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Constants.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataModel\SampleDataSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handler\StudentMessageHandler.cs" />
@@ -60,6 +62,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Transfer\TutorSessionModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Transfer\UpdateModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Transfer\UserProfile.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SignalR\SignalR.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="$(MSBuildThisFileDirectory)Assets\DarkGray.png" />

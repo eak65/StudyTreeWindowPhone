@@ -4,7 +4,7 @@ using System.Text;
 
 namespace App1.Model.Logic
 {
-    public class Tutor : User
+    public class Tutor : Person
     {
         public int TutorId;
         public String description;
@@ -13,6 +13,6 @@ namespace App1.Model.Logic
         public String Major;
         public double TutorBadgeValue;
         public double StudentBadgeValue;
-        public double Distance;
+     //   public double Distance { get; set; }
     }
 }

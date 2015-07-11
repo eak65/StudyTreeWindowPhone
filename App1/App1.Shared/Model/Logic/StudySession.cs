@@ -6,6 +6,11 @@ namespace App1.Model.Logic
 {
     public  class StudySession
     {
+        public StudySession()
+        {
+            PreliminaryTutors =  new List<PreliminaryTutor>();
+
+        }
 
         public int StudySessionId;
         //   public ArrayList<Tutor> Tutors;
@@ -18,11 +23,11 @@ namespace App1.Model.Logic
         public Boolean Active;
         public Boolean StudentStart;
         public Boolean TutorStart;
-        public double Distance;
+       // public double Distance;
       //  public ArrayList<STNotification> Notifications;
         public Boolean StudentRank;
         public Boolean TutorRank;
-        public IList<PreliminaryTutor> PreliminaryTutors;
+        public IList<PreliminaryTutor> PreliminaryTutors { get; set; }
         public Student Student;
         public String FormattedAddress;
         public int TypeCode;

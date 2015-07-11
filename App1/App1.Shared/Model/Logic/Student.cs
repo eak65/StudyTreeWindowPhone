@@ -4,7 +4,8 @@ using System.Text;
 
 namespace App1.Model.Logic
 {
-    public class Student
+    public class Student :Person
     {
+        public int StudentId;
     }
 }

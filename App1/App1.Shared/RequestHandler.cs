@@ -11,7 +11,9 @@ using System.Net;
 using System.Net.Http.Headers;
 using System.Diagnostics;
 using Windows.ApplicationModel.Activation;
+using App1.Model.Transfer;
 using RestSharp.Portable;
+using RestSharp.Portable.Authenticators.OAuth2.Infrastructure;
 
 namespace App1
 {
@@ -24,15 +26,18 @@ namespace App1
         {  
             private static string mainUrl ="http://studytree2.azurewebsites.net/api/";
             public event EventHandler DataReceivedHandler = null;
+            RestClient client = new RestClient(Constants.url);
 
-            public void updateInformation()
+       
+            public async void updateInformation()
             {
-                var client = new RestClient("http://studytree2.azurewebsites.net");
+              
                 var request = new RestRequest("/api/profile/Getupdates",HttpMethod.Get);
-
-                //IRestResponse response = client.Execute(request);
-
-
+                string token = DataManager.shared().token;
+                request.AddHeader("Authorization", "Bearer "+token );
+                IRestResponse<UpdateModel> response=await client.Execute<UpdateModel>(request);
+                UpdateModel updateModel = response.Data;
+                DataManager.shared().update(updateModel);
             }
             public async Task CreatePerson(App1.Model.Logic.CreatePerson person)
             {
