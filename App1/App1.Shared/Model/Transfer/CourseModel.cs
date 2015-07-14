@@ -21,7 +21,7 @@ namespace App1.Model
             c.Title = this.CourseName;
             c.Description = this.CourseDescription;
             c.UniversityCourseId = this.CourseId;
-            c.isUniversityCourse = this.isUniversityCourse;
+            c.IsUniversityCourse = this.isUniversityCourse;
             return c;
         }
     }

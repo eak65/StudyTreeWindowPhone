@@ -1,33 +1,59 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 
 namespace App1.Model.Logic
 {
-    public  class StudySession
+    public  class StudySession : BaseINPC
     {
+        private PreliminaryTutor _activeTutor;
+        private Boolean _active;
+
         public StudySession()
         {
-            PreliminaryTutors =  new List<PreliminaryTutor>();
-
+            PreliminaryTutors =  new ObservableCollection<PreliminaryTutor>();
         }
 
         public int StudySessionId;
         //   public ArrayList<Tutor> Tutors;
-        public PreliminaryTutor ActiveTutor { get; set; }
+
+        public PreliminaryTutor ActiveTutor {
+            get
+            {
+                return _activeTutor;
+            }
+            set
+            {
+                _activeTutor = value;
+                NotifyPropertyChanged("ActiveTutor");
+            }
+        }
         //   @property(nonatomic,strong) NSDate *StartTime;
         //   @property(nonatomic,strong) NSDate *CurrentTime;
         public int StudentId;
-        public String SubjectName;
-        public String CourseName;
-        public Boolean Active;
+        public String SubjectName
+        {
+            get;
+            set;
+        }
+        public String CourseName { get; set; }
+        public Boolean Active
+        {
+            get { return _active; }
+            set
+            {
+                _active = value;
+                NotifyPropertyChanged("Active");
+            }
+        }
         public Boolean StudentStart;
         public Boolean TutorStart;
        // public double Distance;
       //  public ArrayList<STNotification> Notifications;
         public Boolean StudentRank;
         public Boolean TutorRank;
-        public IList<PreliminaryTutor> PreliminaryTutors { get; set; }
+        public ObservableCollection<PreliminaryTutor> PreliminaryTutors { get; set; }
         public Student Student;
         public String FormattedAddress;
         public int TypeCode;

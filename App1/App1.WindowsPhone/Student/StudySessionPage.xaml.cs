@@ -27,6 +27,7 @@ namespace App1.Student
     {
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
+        private DataManager dataManager = DataManager.shared();
 
         public StudySessionPage()
         {
@@ -35,6 +36,8 @@ namespace App1.Student
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
+
+            defaultViewModel.Add("StudySessions", dataManager.myself.StudentStudySessions);
         }
 
         /// <summary>

@@ -4,13 +4,23 @@ using System.Text;
 
 namespace App1.Model.Logic
 {
-    public class TreeMessage
+    public class TreeMessage : BaseINPC
     {
+        private String _messageString;
+
         public int MessageId;
         public int SenderId;
         public String SenderName;
         public int StudentId;
-        public String MessageString;
+        public String MessageString
+        {
+            get { return _messageString; }
+            set
+            {
+                _messageString = value;
+                NotifyPropertyChanged("MessageString");
+            }
+        }
         public int TutorId; // use when you send to server
         public int PreliminaryTutorId;
         public int SessionId;

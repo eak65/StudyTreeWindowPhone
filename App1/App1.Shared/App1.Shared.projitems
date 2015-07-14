@@ -15,6 +15,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Logic\BaseINPC.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Logic\Person.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Transfer\LoginModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Transfer\LoginResponse.cs" />

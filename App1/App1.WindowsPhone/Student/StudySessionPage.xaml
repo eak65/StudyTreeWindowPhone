@@ -5,8 +5,15 @@
     xmlns:local="using:App1.Student"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Self}}"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    
+    <Page.Resources>
+        <DataTemplate x:Key="SessionDatatemplate">
+            <TextBlock Text="{Binding SubjectName}"></TextBlock>
+        </DataTemplate>
+    </Page.Resources>
 
     <Grid x:Name="LayoutRoot">
 
@@ -28,8 +35,24 @@
         </StackPanel>
 
         <!--TODO: Content should be placed within the following grid-->
-        <Grid Grid.Row="1" x:Name="ContentRoot" Margin="19,9.5,19,0">
-
+        <Grid Grid.Row="3" x:Name="ContentRoot" Margin="19,9.5,19,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <TextBlock x:Name="StudentStudySessionLabel" HorizontalAlignment="Center" Grid.Row="0" Style="{ThemeResource GroupHeaderTextBlockStyle}">
+                Active Session
+            </TextBlock>
+            <TextBlock x:Name="AddStudentStudySession" HorizontalAlignment="Center" Grid.Row="1" Style="{ThemeResource ControlHeaderTextBlockStyle}">
+                Create Study Session
+            </TextBlock>
+            <ListView x:Name="StudentStudySessionList" Grid.Row="2"
+                      VerticalAlignment="Top"
+                      ItemTemplate="{StaticResource SessionDatatemplate}"
+                      ItemsSource="{Binding StudySessions}">
+                    
+            </ListView>
         </Grid>
     </Grid>
 </Page>

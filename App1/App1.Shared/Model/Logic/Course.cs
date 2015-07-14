@@ -9,7 +9,7 @@ namespace App1.Model.Logic
         public String Title;
         public String Description;
         public int UniversityCourseId;
-        public Subject subject;
-        public Boolean isUniversityCourse;
+        public Subject Subject;
+        public Boolean IsUniversityCourse;
     }
 }

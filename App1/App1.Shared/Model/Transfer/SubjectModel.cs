@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using App1.Model.Logic;
+using System.Collections.ObjectModel;
 
 namespace App1.Model.Transfer
 {
@@ -18,7 +19,7 @@ namespace App1.Model.Transfer
             Subject subject= new Subject();
             subject.UniversitySubjectName=this.SubjectName;
             subject.UniversitySubjectId=this.SubjectId;
-            subject.UniversityCourses =  new List<Course>();
+            subject.UniversityCourses =  new ObservableCollection<Course>();
 
             foreach(CourseModel model in this.Courses)
                  {

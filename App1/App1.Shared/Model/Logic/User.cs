@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using App1.Model.Transfer;
+using System.Collections.ObjectModel;
 
 namespace App1.Model.Logic
 {
@@ -25,24 +26,24 @@ namespace App1.Model.Logic
         public int mobilePhone;
         public String ProfilePhotoUri;
         public int notificationBadgeValue;
-        public IList<Subject> StudentSubjects;
-        public IList<Subject> TutorSubjects;
-        public IList<StudySession> StudentStudySessions;
-        public IList<StudySession> TutorStudySessions;
-        public IList<STNotification> StudentNotificationList;
-        public IList<STNotification> TutorNotificationList;
+        public ObservableCollection<Subject> StudentSubjects;
+        public ObservableCollection<Subject> TutorSubjects;
+        public ObservableCollection<StudySession> StudentStudySessions;
+        public ObservableCollection<StudySession> TutorStudySessions;
+        public ObservableCollection<STNotification> StudentNotificationList;
+        public ObservableCollection<STNotification> TutorNotificationList;
         public int StudentNotificationBadgeValue;
         public int TutorNotificationBadgeValue;
 
 
         public User()
         {
-            this.TutorSubjects = new List<Subject>();
-            this.StudentSubjects = new List<Subject>();
-            this.StudentStudySessions = new List<StudySession>();
-            this.TutorStudySessions = new List<StudySession>();
-            this.StudentNotificationList = new List<STNotification>();
-            this.TutorNotificationList = new List<STNotification>();
+            this.TutorSubjects = new ObservableCollection<Subject>();
+            this.StudentSubjects = new ObservableCollection<Subject>();
+            this.StudentStudySessions = new ObservableCollection<StudySession>();
+            this.TutorStudySessions = new ObservableCollection<StudySession>();
+            this.StudentNotificationList = new ObservableCollection<STNotification>();
+            this.TutorNotificationList = new ObservableCollection<STNotification>();
 
         }
         public void updateAccountInformation(LoginResponse response)

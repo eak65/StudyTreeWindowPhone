@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 
 namespace App1.Model.Logic
@@ -9,6 +10,6 @@ namespace App1.Model.Logic
         public int UniversitySubjectId;
         public String UniversitySubjectName;
 
-        public IList<Course> UniversityCourses;
+        public ObservableCollection<Course> UniversityCourses;
     }
 }
