@@ -37,193 +37,576 @@ namespace App1
               
                 return request;
             }
-            public async void updateInformation()
+            public async Task<StResponse> updateInformation()
             {
                 RestRequest request = getRequest("/api/Profile/getupdates", HttpMethod.Get);
                 IRestResponse<UpdateModel> response = await client.Execute<UpdateModel>(request);
                 if (response.IsSuccess)
                 {
                     UpdateModel updateModel = response.Data;
-                    DataManager.shared().update(updateModel);
+                    DataManager.shared().update(updateModel);   
+                    return ResponseFactory.createSuccessResponse();
+                    
                 }
-             //   DataReceivedHandler(response, null);
+                return ResponseFactory.createErrorResponse();
             }
 
-            public async void postFee(int fee)
+            public async Task<StResponse>  postFee(int fee)
             {
                 RestRequest request = getRequest("/api/Profile/PostFee", HttpMethod.Post);
                 request.AddJsonBody(new FeeModel(fee));
                 IRestResponse response = await client.Execute(request);
                 if (response.IsSuccess)
                 {
-                    
+                    return ResponseFactory.createSuccessResponse();
                 }
-                DataReceivedHandler(response, null);
+                else
+                {
+                    return ResponseFactory.createErrorResponse();
+                }
             }
 
 
-           
-         public async void  putProfileSettings(ProfileSettingModel model )
+
+            public async Task<StResponse> putProfileSettings(ProfileSettingModel model)
          {
              var request=getRequest("/api/Profile/PutProfileSettings", HttpMethod.Put);
              request.AddJsonBody(model);
              IRestResponse response = await  client.Execute(request);
+             if (response.IsSuccess)
+             {
+                 return ResponseFactory.createSuccessResponse();
+             }
+             else
+             {
+                 return ResponseFactory.createErrorResponse();
+             }
 
          }
 
-        public async void updateLocation(LocationModel model)
+         public async Task<StResponse> updateLocation(LocationModel model)
             {
                     var request=getRequest("/api/Profile/PutUpdateLocation", HttpMethod.Put);
              request.AddJsonBody(model);
              IRestResponse response = await  client.Execute(request);
+             if (response.IsSuccess)
+             {
+                 return ResponseFactory.createSuccessResponse();
+             }
+             else
+             {
+                 return ResponseFactory.createErrorResponse();
+             }
             }
     /*
         Tutor calls
      */
-       
-          public async void  getStudySessionsAroundMe(String location, String distance)
+
+        public async Task<StResponse> getStudySessionsAroundMe(String location, String distance)
             {
                 var request = getRequest("/api/TutorSession/GetSessionAroundMe", HttpMethod.Get);
               request.AddQueryParameter("distance", distance);
               request.AddQueryParameter("location", location);
-              IRestResponse response = await  client.Execute(request);
+              IRestResponse<IList<StudySession>> response = await client.Execute<IList<StudySession>>(request);
+              if (response.IsSuccess)
+              {
+                  return ResponseFactory.createSuccessResponse(response.Data);
+              }
+              else
+              {
+                  return ResponseFactory.createErrorResponse();
+              }
             }
 
-      
-           public async void   getTutorReviews(int tutorId)
+
+    /*      public async Task<StResponse> getTutorReviews(int tutorId)
             {
                 var request = getRequest("/api/TutorSession/GetReviews",HttpMethod.Get);
                request.AddQueryParameter("tutorId", tutorId);
                IRestResponse response = await  client.Execute(request);
             }
-         
-        public async void  getTutorMessages(int sessionId)
+*/
+           public async Task<StResponse> getTutorMessages(int sessionId)
             {
                       var request = getRequest("/api/TutorSession/GetMessages",HttpMethod.Get);
-               request.AddQueryParameter("sessionId", sessionId); 
-            }
+               request.AddQueryParameter("sessionId", sessionId);
+               IRestResponse<IList<TreeMessage>> response = await client.Execute<IList<TreeMessage>>(request);
+               if (response.IsSuccess)
+               {
+                   return ResponseFactory.createSuccessResponse(response.Data);
+               }
+               else
+               {
+                   return ResponseFactory.createErrorResponse();
+               }
+           }
 
-      
-        public async void  deleteTutorSession(int sessionId)
+
+        public async Task<StResponse> deleteTutorSession(int sessionId)
             {
                  var request = getRequest("/api/TutorSession/NotInterested",HttpMethod.Delete);
-               request.AddQueryParameter("sessionId", sessionId); 
+               request.AddQueryParameter("sessionId", sessionId);
+               IRestResponse response = await client.Execute(request);
+               if (response.IsSuccess)
+               {
+                   return ResponseFactory.createSuccessResponse();
+               }
+               else
+               {
+                   return ResponseFactory.createErrorResponse();
+               }
             }
 
-            public async void postTutorToSession(TutorSessionModel tutorSessionModel)
+        public async Task<StResponse> postTutorToSession(TutorSessionModel tutorSessionModel)
             {
                    var request = getRequest("/api/TutorSession/PostTutorToSession",HttpMethod.Post);
                request.AddJsonBody(tutorSessionModel);
+               IRestResponse response = await client.Execute(request);
+               if (response.IsSuccess)
+               {
+                   return ResponseFactory.createSuccessResponse();
+               }
+               else
+               {
+                   return ResponseFactory.createErrorResponse();
+               }
  
             }
-   
-        public async void  postTutorMessage( TreeMessage messageModel)
+
+            public async Task<StResponse> postTutorMessage(TreeMessage messageModel)
             {
                   var request = getRequest("/api/TutorSession/PostMessage",HttpMethod.Post);
                request.AddJsonBody(messageModel);
+               IRestResponse response = await client.Execute(request);
+               if (response.IsSuccess)
+               {
+                   return ResponseFactory.createSuccessResponse();
+               }
+               else
+               {
+                   return ResponseFactory.createErrorResponse();
+               }
             }
 
-             public async void  putTutorReview(ReviewModel model)
+        public async Task<StResponse> putTutorReview(ReviewModel model)
             {
                    var request = getRequest("/api/TutorSession/PutReview",HttpMethod.Put);
                request.AddJsonBody(model);
+               IRestResponse response = await client.Execute(request);
+               if (response.IsSuccess)
+               {
+                   return ResponseFactory.createSuccessResponse();
+               }
+               else
+               {
+                   return ResponseFactory.createErrorResponse();
+               }
             }
 
        
-            public async void  deleteTutorSubject( String courseName)
+            public async Task<StResponse> deleteTutorSubject( String courseName)
             {
                 
                    var request = getRequest("/api/Subject/DeleteTutorCourse",HttpMethod.Delete);
-                request.AddQueryParameter("CourseName", courseName);
+                   request.AddQueryParameter("CourseName", courseName);
+                   IRestResponse response = await client.Execute(request);
+                   if (response.IsSuccess)
+                   {
+                       return ResponseFactory.createSuccessResponse();
+                   }
+                   else
+                   {
+                       return ResponseFactory.createErrorResponse();
+                   }
 
             }
 
-            public async void postTutorSubject(PostSubjectModel model)
+            public async Task<StResponse> postTutorSubject(PostSubjectModel model)
             {
                       
                    var request = getRequest("/api/Subject/PostTutorSubject",HttpMethod.Post);
-                request.AddJsonBody(model);
+                     request.AddJsonBody(model);
+                     IRestResponse response = await client.Execute(request);
+                if (response.IsSuccess)
+                {
+                    return ResponseFactory.createSuccessResponse();
+                }
+                else
+                {
+                    return ResponseFactory.createErrorResponse();
+                }
+
+
             }
 
-        
-            public async void getTutorSubject()
+
+            public async Task<StResponse> getTutorSubject()
             {
-                       var request = getRequest("/api/Subject/GetTutorSubjects",HttpMethod.Get);
-              var response=  client.Execute<IList<SubjectModel>>(request);
+              var request = getRequest("/api/Subject/GetTutorSubjects",HttpMethod.Get);
+              IRestResponse<IList<SubjectModel>> response =await client.Execute<IList<SubjectModel>>(request);
+              if (response.IsSuccess)
+              {
+                  DataManager.shared().myself.TutorSubjects.Clear();
+
+                  foreach (SubjectModel subject in response.Data)
+                  {
+                      DataManager.shared().myself.TutorSubjects.Add(subject.getSubject());
+                  }
+                  return ResponseFactory.createSuccessResponse();
+              }
+              else
+              {
+                  return ResponseFactory.createErrorResponse();
+              }
             }
     /*
         Student calls
      */
         
-            public async void getStudentSessions()
+            public async Task<StResponse> getStudentSessions()
             {
                  var request = getRequest("/api/StudentSession/GetStudySessions",HttpMethod.Get);
-              var response=  client.Execute<IList<StudySession>>(request);
+                 IRestResponse<IList<StudySession>> response = await client.Execute<IList<StudySession>>(request);
+                if (response.IsSuccess)
+                {
+                    DataManager.shared().myself.StudentStudySessions.Clear();
+
+                    foreach (StudySession studySession in response.Data)
+                    {
+                        DataManager.shared().myself.StudentStudySessions.Add(studySession);
+                    }
+                    return ResponseFactory.createSuccessResponse();
+                }
+                else
+                {
+                    return ResponseFactory.createErrorResponse();
+                }
+
             }
 
-            public async void getStudentSubject()
+            public async Task<StResponse> getStudentSubject()
             {
                 var request = getRequest("/api/Subject/GetStudentSubjects", HttpMethod.Get);
-                       var response=  client.Execute<IList<SubjectModel>>(request);
+                IRestResponse<IList<SubjectModel>> response = await client.Execute<IList<SubjectModel>>(request);
+                if (response.IsSuccess)
+                {
+                    DataManager.shared().myself.StudentSubjects.Clear();
+                    foreach (SubjectModel model in response.Data)
+                    {
+                        DataManager.shared().myself.StudentSubjects.Add(model.getSubject());
+                    }
+                    return ResponseFactory.createSuccessResponse();
+                }
+                else
+                {
+                    return ResponseFactory.createErrorResponse();
+                }
             }
 
-            public async void putLoginInformation( LoginModel model)
+            public async Task<StResponse> putLoginInformation(LoginModel model)
             {
             
                 var request = getRequest("/api/Profile/Login", HttpMethod.Put);
                 IRestResponse<LoginResponse> response = await client.Execute<LoginResponse>(request);
-                LoginResponse updateModel = response.Data;
-                DataManager.shared().myself.updateAccountInformation(updateModel);
+                if (response.IsSuccess)
+                {
+                    LoginResponse updateModel = response.Data;
+                    DataManager.shared().myself.updateAccountInformation(updateModel);
+                    return ResponseFactory.createSuccessResponse();
+                }
+                    return ResponseFactory.createErrorResponse();
+
+           
 
             }
-/*
- *              NEED SLEEP BEFORE FINISHING
-         @DELETE("/api/Subject/DeleteStudentCourse")
-         public async void  PostStudentSubject(@Query("CourseName") String courseName,Callback<Response> cb);
-        @GET("/api/StudentSession/GetStudySession")
-        public async void  getStudentSession(@Query("sessionId") int sessionId,  Callback<ArrayList<StudySession>>cb);
-        @GET("/api/StudentSession/GetMessages")
-        public async void  getStudentMessages(@Query("sessionId") int sessionId,@Query("tutorId") int tutorId,Callback<ArrayList<TreeMessage>>cb);
-        @GET("/api/StudentSession/GetReviews")
-        public async void  getStudentReviews(@Query("studentId")int studentId,Callback<Response>cb);
-        @GET("/api/StudentSession/GetSessionTime")
-        public async void  getSessionTime(@Query("sessionId") int sessionId,Callback<StudySession>cb);
 
-        @GET("/api/University/GetUniversity")
-        public async void  getUniversity(Callback<University>university);
+         
+             public async Task<StResponse>  deleteStudentSubject(String courseName)
+            {
+                   var request = getRequest("/api/Subject/DeleteStudentCourse", HttpMethod.Delete);
+                  request.AddQueryParameter("courseName", courseName);
+                 IRestResponse response = await client.Execute(request);
+                 if (response.IsSuccess)
+                 {
+             
+                     return ResponseFactory.createSuccessResponse();
+                 }
+                
+                 return ResponseFactory.createErrorResponse();
 
-        @POST("/api/StudentSession/PostCreateStudySession")
-        public async void  postStudySession(@Body StudySessionModel sessionModel, Callback<Response>cb);
-        @POST("/api/StudentSession/PostMessage")
-        public async void  postStudentMessage(@Body TreeMessage messageModel,Callback<Response>cb);
+           
 
-        @POST("/api/Subject/PostStudentSubject")
-        public async void  postStudentSubject(@Body PostSubjectModel model , Callback<Response>cb);
+            }
+            
+           public async Task<StResponse> getStudentSession(int sessionId)
+            {
+              var request = getRequest("/api/StudentSession/GetStudySession", HttpMethod.Get);
+               request.AddQueryParameter("sessionId", sessionId);
+               IRestResponse<StudySession> response = await client.Execute<StudySession>(request);
+               if (response.IsSuccess)
+               {
+                   return ResponseFactory.createSuccessResponse(response.Data);
+               }
+               return ResponseFactory.createErrorResponse();
+            }
+
+     
+        public async Task<StResponse>  getStudentMessages(int sessionId, int tutorId)
+            {
+                var request = getRequest("/api/StudentSession/GetMessages", HttpMethod.Get);
+                request.AddQueryParameter("sessionId", sessionId);
+                request.AddQueryParameter("tutorId", tutorId);
+                IRestResponse<IList<TreeMessage>> response = await client.Execute<IList<TreeMessage>>(request);
+            if (response.IsSuccess)
+            {
+                return ResponseFactory.createSuccessResponse(response.Data);
+            }
+            else
+            {
+                return ResponseFactory.createErrorResponse();
+            }
+            }
+
+        /*
+        public async Task<StResponse>getStudentReviews(int studentId)
+            {
+                var request = getRequest("/api/StudentSession/GetReviews", HttpMethod.Get);
+                request.AddQueryParameter("studentId", studentId);
+            IRestResponse response = await client.Execute(request);
+            if (response.IsSuccess)
+            {
+                return ResponseFactory.createSuccessResponse(response.Data);
+            }
+            else
+            {
+                return ResponseFactory.createErrorResponse();
+            }
+            }*/
+       
+        public async Task<StResponse> getSessionTime( int sessionId)
+            {
+                var request = getRequest("/api/StudentSession/GetSessionTime", HttpMethod.Get);
+                request.AddQueryParameter("sessionId", sessionId);
+                IRestResponse<StudySession> response = await client.Execute<StudySession>(request);
+                if (response.IsSuccess)
+                {
+                    return ResponseFactory.createSuccessResponse(response.Data);
+                }
+                else
+                {
+                    return ResponseFactory.createErrorResponse();
+                }
+            }
 
 
-        @PUT("/api/StudentSession/PutAccept")
-        public async void  putStudentAccept(@Body AcceptModel acceptModel, Callback<Response>cb);
-        @PUT("/api/StudentSession/PutStart")
-        public async void  putStudentStart(@Body StartModel startModel, Callback<Response>cb);
-        @PUT("/api/StudentSession/PutEndSession")
-        public async void  putStudentEndSession(@Body EndSessionModel endSessionModel,Callback<Response>cb);
-        @PUT("/api/StudentSession/PutUpdateTimer")
-        public async void  putStudentUpdateTimer(@Body TimerModel timerModel,Callback<Response>cb);
-        @PUT("/api/StudentSession/PutReview")
-        public async void  putStudentReview(@Body ReviewModel reviewMode, Callback<Response>cb);
-        @PUT("/api/StudentSession/PutStart")
-        public async void  putStartTime(@Body StartModel model, Callback<Response>cb);
+            public async Task<StResponse> getUniversity()
+            {
+               var request = getRequest("/api/University/GetUniversity", HttpMethod.Get);
+                IRestResponse<University> response = await client.Execute<University>(request);
+                if (response.IsSuccess)
+                {
+                    return ResponseFactory.createSuccessResponse(response.Data);
+                }
+                else
+                {
+                    return ResponseFactory.createErrorResponse();
+                }
+            }
 
-        @DELETE("/api/StudentSession/DeleteStudySession")
-        public async void  deleteStudentStudySession(@Query("sessionId")int sessionId,Callback<Response>cb);
-        @DELETE("/api/StudentSession/DeleteTutor")
-        public async void  deleteTutorFromStudySession(@Query("sessionId")int sessionId,@Query("tutorId")int tutorId,Callback<Response>cb);
+    
+            public async Task<StResponse> postStudySession(StudySessionModel sessionModel)
+            {
+               var request = getRequest("/api/StudentSession/PostCreateStudySession", HttpMethod.Post);
+                request.AddJsonBody(sessionModel);
+                IRestResponse response = await client.Execute(request);
+                if (response.IsSuccess)
+                {
+                    return ResponseFactory.createSuccessResponse();
+                }
+                else
+                {
+                    return ResponseFactory.createErrorResponse();
+                }
 
-        @GET("/api/Search/GetNotifiableTutors")
-        public async void  getSearchForTutors(@Query("studySessionId") int sessionId, Callback<ArrayList<Tutor>>cb);
+            }
+           public async Task<StResponse>   postStudentMessage(TreeMessage messageModel)
+            {
+                 var request = getRequest("/api/StudentSession/PostMessage", HttpMethod.Post);
+                 request.AddJsonBody(messageModel);
+                 IRestResponse response = await client.Execute(request);
+                 if (response.IsSuccess)
+                 {
+                     return ResponseFactory.createSuccessResponse();
+                 }
+                 else
+                 {
+                     return ResponseFactory.createErrorResponse();
+                 }
+            }
 
-        @POST("/api/EventNotification/PostSuggestionTutor")
-        public async void  postSuggestTutor(@Body SuggestModel model , Callback<Response>cb);
+   
+        public async Task<StResponse>   postStudentSubject( PostSubjectModel model )
+            {
+                var request = getRequest("/api/Subject/PostStudentSubject", HttpMethod.Post);
+                request.AddJsonBody(model);
+                IRestResponse response = await client.Execute(request);
+                if (response.IsSuccess)
+                {
+                    return ResponseFactory.createSuccessResponse();
+                }
+                else
+                {
+                    return ResponseFactory.createErrorResponse();
+                }
+            }
+
+
+            public async Task<StResponse> putStudentAccept(AcceptModel acceptModel)
+            {
+                var request = getRequest("/api/StudentSession/PutAccept", HttpMethod.Put);
+                request.AddJsonBody(acceptModel);
+                IRestResponse response = await client.Execute(request);
+                if (response.IsSuccess)
+                {
+                    return ResponseFactory.createSuccessResponse();
+                }
+                else
+                {
+                    return ResponseFactory.createErrorResponse();
+                }
+
+            }
+ 
+            public async Task<StResponse> putStudentStart(StartModel startModel)
+            {
+                 var request = getRequest("/api/StudentSession/PutStart", HttpMethod.Put);
+                 request.AddJsonBody(startModel);
+                 IRestResponse response = await client.Execute(request);
+                 if (response.IsSuccess)
+                 {
+                     return ResponseFactory.createSuccessResponse();
+                 }
+                 else
+                 {
+                     return ResponseFactory.createErrorResponse();
+                 }
+            }
+   
+            public async Task<StResponse> putStudentEndSession(EndSessionModel endSessionModel)
+            {
+                              var request = getRequest("/api/StudentSession/PutEndSession", HttpMethod.Put);
+                              request.AddJsonBody(endSessionModel);
+                              IRestResponse response = await client.Execute(request);
+                              if (response.IsSuccess)
+                              {
+                                  return ResponseFactory.createSuccessResponse();
+                              }
+                              else
+                              {
+                                  return ResponseFactory.createErrorResponse();
+                              }
+   
+            }
+        public async Task<StResponse>   putStudentUpdateTimer(TimerModel timerModel)
+            {
+                  var request = getRequest("/api/StudentSession/PutUpdateTimer", HttpMethod.Put);
+                  request.AddJsonBody(timerModel);
+                  IRestResponse response = await client.Execute(request);
+                  if (response.IsSuccess)
+                  {
+                      return ResponseFactory.createSuccessResponse();
+                  }
+                  else
+                  {
+                      return ResponseFactory.createErrorResponse();
+                  }
+            }
+
+        public async Task<StResponse> putStudentReview(ReviewModel reviewModel)
+            {
+               var request = getRequest("/api/StudentSession/PutReview", HttpMethod.Put);
+               request.AddJsonBody(reviewModel);
+               IRestResponse response = await client.Execute(request);
+               if (response.IsSuccess)
+               {
+                   return ResponseFactory.createSuccessResponse();
+               }
+               else
+               {
+                   return ResponseFactory.createErrorResponse();
+               }
+            }
+
+            public async Task<StResponse> putStartTime(StartModel model)
+            {
+                var request = getRequest("/api/StudentSession/PutStart", HttpMethod.Put);
+                request.AddJsonBody(model);
+                IRestResponse response = await client.Execute(request);
+                if (response.IsSuccess)
+                {
+                    return ResponseFactory.createSuccessResponse();
+                }
+                else
+                {
+                    return ResponseFactory.createErrorResponse();
+                }
+
+            }
+
+            public async Task<StResponse> deleteStudentStudySession(int sessionId)
+            {
+                     var request = getRequest("/api/StudentSession/DeleteStudySession", HttpMethod.Delete);
+                request.AddQueryParameter("sessionId", sessionId);
+                IRestResponse response = await client.Execute(request);
+                if (response.IsSuccess)
+                {
+                    return ResponseFactory.createSuccessResponse();
+                }
+                else
+                {
+                    return ResponseFactory.createErrorResponse();
+                }
+
+            }
+        public async Task<StResponse>  deleteTutorFromStudySession(int sessionId,int tutorId)
+            {
+               var request = getRequest("/api/StudentSession/DeleteTutor", HttpMethod.Delete);
+            request.AddQueryParameter("sessionId", sessionId);
+            request.AddQueryParameter("tutorId", tutorId);
+            IRestResponse response = await client.Execute(request);
+
+            if (response.IsSuccess)
+            {
+                return ResponseFactory.createSuccessResponse();
+            }
+            else
+            {
+                return ResponseFactory.createErrorResponse();
+            }
+            }
+
+        /*
+        public async Task<StResponse>   getSearchForTutors(int sessionId)
+            {
+              var request = getRequest("/api/Search/GetNotifiableTutors", HttpMethod.Get);
+            request.AddQueryParameter("studySessionId", sessionId);
+
+            }
+            */
+            public async Task<StResponse> postSuggestTutor(SuggestModel model)
+            {
+              var request = getRequest("/api/EventNotification/PostSuggestionTutor", HttpMethod.Post);
+                request.AddJsonBody(model);
+                IRestResponse response =await client.Execute(request);
+                if (response.IsSuccess)
+                {
+                    return ResponseFactory.createSuccessResponse();
+                }
+                else
+                {
+                    return ResponseFactory.createErrorResponse();
+                }
+            }
 
     /*
     Subject Calls

@@ -19,7 +19,9 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using App1.Model.Transfer;
 using App1.SignalR;
+using RestSharp.Portable;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkID=390556
 
@@ -42,7 +44,8 @@ namespace App1
            this.navigationHelper = new NavigationHelper(this);
            this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
            this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
-          
+            RequestHandler handler = new RequestHandler();
+            handler.putProfileSettings(new ProfileSettingModel("Bill", "Rogers", "imaginecup"));
         }
 
         public NavigationHelper NavigationHelper

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace App1.Model.Transfer
 {
-    class StudySessionModel
+   public class StudySessionModel
     {
         public String CourseName;
         public String SubjectName;
