@@ -8,6 +8,7 @@ namespace App1.Model.Logic
     public class Person : BaseINPC
     {
         private TreeMessage _lastMessage;
+        private ObservableCollection<StudySession> _studySesssions;
 
         public ObservableCollection<TreeMessage> Messages;
         public double PersonId;
@@ -29,7 +30,15 @@ namespace App1.Model.Logic
        // public IList<Review> Reviews;
         public ObservableCollection<Subject> Subjects;
         public String ProfilePhotoUri;
-        public ObservableCollection<StudySession> StudySessions;
+        public ObservableCollection<StudySession> StudySessions
+        {
+            get { return _studySesssions; }
+            set
+            {
+                _studySesssions = value;
+                NotifyPropertyChanged("StudySessions");
+            }
+        }
         public ObservableCollection<STNotification> Notifications;
 
         //public boolean newMessage;

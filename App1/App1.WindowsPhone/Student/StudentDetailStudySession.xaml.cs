@@ -1,8 +1,6 @@
 ﻿using App1.Common;
-using App1.Model.Logic;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -25,31 +23,18 @@ namespace App1.Student
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class StudySessionPage : Page
+    public sealed partial class StudentDetailStudySession : Page
     {
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
-        private DataManager dataManager = DataManager.shared();
-        private ObservableCollection<StudySession> _activeSessions = new ObservableCollection<StudySession>();
-        private ListView _sessionListView;
 
-        public StudySessionPage()
+        public StudentDetailStudySession()
         {
             this.InitializeComponent();
 
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
-
-            foreach(StudySession s in dataManager.myself.StudentStudySessions)
-            {
-                if(s.TypeCode != 5)
-                {
-                    _activeSessions.Add(s);
-                }
-            }
-            defaultViewModel.Add("StudySessions", _activeSessions);
-            _sessionListView = StudentStudySessionList;
         }
 
         /// <summary>
@@ -122,16 +107,5 @@ namespace App1.Student
         }
 
         #endregion
-
-        private void AddStudentStudySession_Click(object sender, RoutedEventArgs e)
-        {
-            this.Frame.Navigate(typeof(StudentCreateStudySessionPage));
-        }
-
-        private void StudentStudySessionList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            StudySession selectedSession = _sessionListView.SelectedItem as StudySession;
-            this.Frame.Navigate(typeof(StudentDetailStudySession), selectedSession.StudySessionId);
-        }
     }
 }
