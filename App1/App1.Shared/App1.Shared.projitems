@@ -77,4 +77,7 @@
     <Content Include="$(MSBuildThisFileDirectory)Assets\MediumGray.png" />
     <Content Include="$(MSBuildThisFileDirectory)DataModel\SampleData.json" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Model\ViewModel\" />
+  </ItemGroup>
 </Project>
