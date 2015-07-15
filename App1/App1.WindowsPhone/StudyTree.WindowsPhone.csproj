@@ -81,6 +81,14 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Student\DetailStudentStudySessionViewModel.cs" />
+    <Compile Include="Student\StudentCreateStudySessionPage.xaml.cs">
+      <DependentUpon>StudentCreateStudySessionPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Student\StudentCreateStudySessionViewModel.cs" />
+    <Compile Include="Student\StudentDetailStudySession.xaml.cs">
+      <DependentUpon>StudentDetailStudySession.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Student\StudentNotificationsPage.xaml.cs">
       <DependentUpon>StudentNotificationsPage.xaml</DependentUpon>
     </Compile>
@@ -121,6 +129,14 @@
     <Content Include="RestSharp.Portable.rd.xml" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Student\StudentCreateStudySessionPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Student\StudentDetailStudySession.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Student\StudentNotificationsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
