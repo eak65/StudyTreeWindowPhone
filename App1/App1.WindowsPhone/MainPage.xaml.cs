@@ -45,6 +45,7 @@ namespace App1
            this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
            this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
 
+
         }
 
         public NavigationHelper NavigationHelper
