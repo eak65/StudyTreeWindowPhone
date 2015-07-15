@@ -42,12 +42,26 @@ namespace App1.Student
 
         public String ActiveTutorName
         {
-            get { return _session.ActiveTutor.FirstName; }
+            get
+            {
+                if (_session.ActiveTutor != null)
+                {
+                    return _session.ActiveTutor.FirstName;
+                }
+                return "";
+            }
         }
 
         public String DisplayActiveTutorFee
         {
-            get { return _session.ActiveTutor.SessionFee.ToString("C", new CultureInfo("en-us")); }
+            get
+            {
+                if (_session.ActiveTutor != null)
+                {
+                    return _session.ActiveTutor.SessionFee.ToString("C", new CultureInfo("en-us"));
+                }
+                return "";
+            }
         }
 
         public ObservableCollection<PrelimTutorVM> PreliminaryTutors

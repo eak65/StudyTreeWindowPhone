@@ -78,8 +78,10 @@ namespace App1.Student
                 this.DataContext = defaultViewModel;
                 if (_session.ActiveTutor == null)
                 {
-                    this.FindChildControl<StackPanel>(this, "ActiveTutorStackPanel");
-                    //_activeTutorStack.Visibility = Visibility.Collapsed;
+                    if(_activeTutorStack != null)
+                    {
+                        _activeTutorStack.Visibility = Visibility.Collapsed;
+                    }
                 }
             }
         }
@@ -139,30 +141,39 @@ namespace App1.Student
             e.Handled = true;
         }
 
-        public DependencyObject FindChildControl<T>(DependencyObject control, string ctrlName)
+        private void ActiveTutorStackPanel_Loaded(object sender, RoutedEventArgs e)
         {
-            int childNumber = VisualTreeHelper.GetChildrenCount(control);
-            for (int i = 0; i < childNumber; i++)
+            _activeTutorStack = sender as StackPanel;
+            if(_session != null && _session.ActiveTutor == null)
             {
-                DependencyObject child = VisualTreeHelper.GetChild(control, i);
-                FrameworkElement fe = child as FrameworkElement;
-                // Not a framework element or is null
-                if (fe == null) return null;
-
-                if (child is T && fe.Name == ctrlName)
-                {
-                    // Found the control so return
-                    return child;
-                }
-                else
-                {
-                    // Not found it - search children
-                    DependencyObject nextLevel = FindChildControl<T>(child, ctrlName);
-                    if (nextLevel != null)
-                        return nextLevel;
-                }
+                _activeTutorStack.Visibility = Visibility.Collapsed;
             }
-            return null;
         }
+
+        //public DependencyObject FindChildControl<T>(DependencyObject control, string ctrlName)
+        //{
+        //    int childNumber = VisualTreeHelper.GetChildrenCount(control);
+        //    for (int i = 0; i < childNumber; i++)
+        //    {
+        //        DependencyObject child = VisualTreeHelper.GetChild(control, i);
+        //        FrameworkElement fe = child as FrameworkElement;
+        //        // Not a framework element or is null
+        //        if (fe == null) return null;
+
+        //        if (child is T && fe.Name == ctrlName)
+        //        {
+        //            // Found the control so return
+        //            return child;
+        //        }
+        //        else
+        //        {
+        //            // Not found it - search children
+        //            DependencyObject nextLevel = FindChildControl<T>(child, ctrlName);
+        //            if (nextLevel != null)
+        //                return nextLevel;
+        //        }
+        //    }
+        //    return null;
+        //}
     }
 }
