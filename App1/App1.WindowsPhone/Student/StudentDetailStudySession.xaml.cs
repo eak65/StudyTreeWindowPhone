@@ -1,4 +1,5 @@
 ﻿using App1.Common;
+using App1.Model.Logic;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -25,8 +26,10 @@ namespace App1.Student
     /// </summary>
     public sealed partial class StudentDetailStudySession : Page
     {
+        private StudySession _session;
         private NavigationHelper navigationHelper;
-        private ObservableDictionary defaultViewModel = new ObservableDictionary();
+        private StackPanel _activeTutorStack;
+        private DetailStudentStudySessionViewModel defaultViewModel;
 
         public StudentDetailStudySession()
         {
@@ -49,7 +52,7 @@ namespace App1.Student
         /// Gets the view model for this <see cref="Page"/>.
         /// This can be changed to a strongly typed view model.
         /// </summary>
-        public ObservableDictionary DefaultViewModel
+        public DetailStudentStudySessionViewModel DefaultViewModel
         {
             get { return this.defaultViewModel; }
         }
@@ -67,6 +70,18 @@ namespace App1.Student
         /// session.  The state will be null the first time a page is visited.</param>
         private void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
+            int sessionid = (int)e.NavigationParameter;
+            _session = DataManager.shared().getStudySessionFromId(sessionid);
+            if (_session != null)
+            {
+                defaultViewModel = new DetailStudentStudySessionViewModel(_session);
+                this.DataContext = defaultViewModel;
+                if (_session.ActiveTutor == null)
+                {
+                    this.FindChildControl<StackPanel>(this, "ActiveTutorStackPanel");
+                    //_activeTutorStack.Visibility = Visibility.Collapsed;
+                }
+            }
         }
 
         /// <summary>
@@ -107,5 +122,47 @@ namespace App1.Student
         }
 
         #endregion
+
+        private void Grid_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(StudentCreateStudySessionPage));
+        }
+
+        private void activeTutorAccept_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            e.Handled = true;
+            Frame.Navigate(typeof(MainPage));
+        }
+
+        private void prelimTutorAccept_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            e.Handled = true;
+        }
+
+        public DependencyObject FindChildControl<T>(DependencyObject control, string ctrlName)
+        {
+            int childNumber = VisualTreeHelper.GetChildrenCount(control);
+            for (int i = 0; i < childNumber; i++)
+            {
+                DependencyObject child = VisualTreeHelper.GetChild(control, i);
+                FrameworkElement fe = child as FrameworkElement;
+                // Not a framework element or is null
+                if (fe == null) return null;
+
+                if (child is T && fe.Name == ctrlName)
+                {
+                    // Found the control so return
+                    return child;
+                }
+                else
+                {
+                    // Not found it - search children
+                    DependencyObject nextLevel = FindChildControl<T>(child, ctrlName);
+                    if (nextLevel != null)
+                        return nextLevel;
+                }
+            }
+            return null;
+        }
     }
 }

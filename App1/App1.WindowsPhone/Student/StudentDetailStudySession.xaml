@@ -6,11 +6,24 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
+    DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Mode=Self}}"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Hub Header="StudyTree : Branch Out!">
-        <HubSection x:Uid="InformationHub" Header="Information" Width="Auto">
-            <DataTemplate>
+    <Page.Resources>
+        <DataTemplate x:Key="TutorListTemplate">
+            <Border Margin="0,0,0,0" Height="101" RequestedTheme="Dark" Background="{ThemeResource AppBarItemForegroundThemeBrush}" BorderThickness="2.5" CornerRadius="5" BorderBrush="{ThemeResource AppBarBackgroundThemeBrush}">
+                <Grid IsHitTestVisible="True" Tapped="Grid_Tapped">
+                    <TextBlock x:Name="ActiveTutorNameTextBlock" TextWrapping="Wrap" Text="{Binding TutorName}" Margin="16,16,0,0" Style="{StaticResource ListViewItemContentTextBlockStyle}" FontSize="18.667" VerticalAlignment="Top" Foreground="Black" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin"/>
+                    <TextBlock x:Name="ActiveTutorFeeTextBlock" TextWrapping="Wrap" Text="{Binding TutorFee}" Style="{StaticResource ListViewItemContentTextBlockStyle}" FontSize="10.667" Margin="16,0,0,24" VerticalAlignment="Bottom" Foreground="Black" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin"/>
+                    <Button IsHitTestVisible="True" Tapped="prelimTutorAccept_Tapped" x:Name="button" Content="Accept" HorizontalAlignment="Right" Margin="0,43,21,0" VerticalAlignment="Stretch" Background="#FF1ABC9C" BorderThickness="0" d:LayoutOverrides="Height, LeftMargin, RightMargin"/>
+                </Grid>
+            </Border>
+        </DataTemplate>
+    </Page.Resources>
+
+    <Hub DataContext="{Binding}" Header="StudyTree : Branch Out!">
+        <HubSection DataContext="{Binding}" x:Name="InformationHub" x:Uid="InformationHub" Header="Information" Width="Auto">
+            <DataTemplate x:Name="InformationTemplate">
                 <Grid x:Name="LayoutRoot">
 
                     <Grid.ChildrenTransitions>
@@ -25,44 +38,52 @@
                     </Grid.RowDefinitions>
 
                     <!-- Title Panel -->
-                    <StackPanel Grid.Row="0" Margin="19,0,0,0">
-                        <TextBlock Text="MY APPLICATION" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,12,0,0"/>
-                        <TextBlock Text="page title" Margin="0,-6.5,0,26.5" Style="{ThemeResource HeaderTextBlockStyle}" CharacterSpacing="{ThemeResource PivotHeaderItemCharacterSpacing}"/>
-                    </StackPanel>
 
                     <!--TODO: Content should be placed within the following grid-->
+                    <!--TODO: Content should be placed within the following grid-->
                     <Grid Grid.Row="1" x:Name="ContentRoot" Margin="19,9.5,19,0">
-
+                        <Grid HorizontalAlignment="Left" Height="22" Margin="0,12,0,0" VerticalAlignment="Top" Width="85">
+                            <TextBlock x:Name="SubjectNameTextBlock" TextWrapping="Wrap" Text="{Binding SubjectName}" Style="{StaticResource ListViewItemContentTextBlockStyle}" d:LayoutOverrides="Width, Height, TopMargin, BottomMargin, LeftPosition, RightPosition, TopPosition, BottomPosition"/>
+                            <TextBlock x:Name="CourseNameTextBlock" TextWrapping="Wrap" Text="{Binding CourseName}" Style="{StaticResource ListViewItemContentTextBlockStyle}" Margin="162,0,-142,0" d:LayoutOverrides="Width, Height, TopMargin, BottomMargin, LeftPosition, RightPosition, TopPosition, BottomPosition"/>
+                            <TextBlock x:Name="TimeRequestedTextBlock" TextWrapping="Wrap" Text="{Binding DisplayTimeRequested}" Style="{StaticResource ListViewItemContentTextBlockStyle}" Margin="0,49,-142,-48" VerticalAlignment="Top" d:LayoutOverrides="LeftPosition, RightPosition"/>
+                            <Button x:Name="DeleteSessionButton" Content="Delete Session" d:LayoutOverrides="LeftPosition, RightPosition" HorizontalAlignment="Stretch" Margin="0,0,-147,-133" VerticalAlignment="Bottom" Background="Red" BorderThickness="0.5"/>
+                            <Button x:Name="FindTutorButton" Content="Find Tutors" HorizontalAlignment="Stretch" Margin="0,0,-147,-199" VerticalAlignment="Bottom" Background="#FF1ABC9C" BorderThickness="0.5" d:LayoutOverrides="LeftPosition, RightPosition"/>
+                            <StackPanel x:Name="ActiveTutorStackPanel" Height="140" Margin="0,0,0,-396" VerticalAlignment="Bottom">
+                                <Border Margin="0,0,-197,0" Background="#FF646464" Height="37" CornerRadius="5" BorderThickness="1" >
+                                    <TextBlock x:Name="textBlock" TextWrapping="Wrap" Style="{StaticResource TitleTextBlockStyle}" SelectionHighlightColor="#FF7F68B4" Height="46" Margin="8,8,-0.333,0" Foreground="Black">
+                            			<Run Text="Active Tutor"/>
+                            			<Run/>
+                                    </TextBlock>
+                                </Border>
+                                <Border Margin="0,0,-197,0" Height="101" RequestedTheme="Dark" Background="{ThemeResource AppBarItemForegroundThemeBrush}" BorderThickness="2.5" CornerRadius="5" BorderBrush="{ThemeResource AppBarBackgroundThemeBrush}">
+                                    <Grid IsHitTestVisible="True" Tapped="Grid_Tapped">
+                                        <TextBlock x:Name="ActiveTutorNameTextBlock" TextWrapping="Wrap" Text="{Binding ActiveTutorName}" Margin="16,16,0,0" Style="{StaticResource ListViewItemContentTextBlockStyle}" FontSize="18.667" VerticalAlignment="Top" Foreground="Black" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin"/>
+                                        <TextBlock x:Name="ActiveTutorFeeTextBlock" TextWrapping="Wrap" Text="{Binding DisplayActiveTutorFee}" Style="{StaticResource ListViewItemContentTextBlockStyle}" FontSize="10.667" Margin="16,0,0,24" VerticalAlignment="Bottom" Foreground="Black" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin"/>
+                                        <Button IsHitTestVisible="True" Tapped="activeTutorAccept_Tapped" x:Name="button" Content="Accept" HorizontalAlignment="Right" Margin="0,43,21,0" VerticalAlignment="Stretch" Background="#FF1ABC9C" BorderThickness="0" d:LayoutOverrides="Height, LeftMargin, RightMargin"/>
+                                    </Grid>
+                                </Border>
+                            </StackPanel>
+                        </Grid>
                     </Grid>
                 </Grid>
             </DataTemplate>
         </HubSection>
         <HubSection x:Uid="PreliminaryTutorHub" Header="Preliminary Tutor" Width="Auto" >
             <DataTemplate>
-                <Grid x:Name="LayoutRoot">
-
-                    <Grid.ChildrenTransitions>
-                        <TransitionCollection>
-                            <EntranceThemeTransition/>
-                        </TransitionCollection>
-                    </Grid.ChildrenTransitions>
-
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-
-                    <!-- Title Panel -->
-                    <StackPanel Grid.Row="0" Margin="19,0,0,0">
-                        <TextBlock Text="MY APPLICATION" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,12,0,0"/>
-                        <TextBlock Text="page title" Margin="0,-6.5,0,26.5" Style="{ThemeResource HeaderTextBlockStyle}" CharacterSpacing="{ThemeResource PivotHeaderItemCharacterSpacing}"/>
-                    </StackPanel>
-
-                    <!--TODO: Content should be placed within the following grid-->
-                    <Grid Grid.Row="1" x:Name="ContentRoot" Margin="19,9.5,19,0">
-
-                    </Grid>
-                </Grid>
+                <StackPanel Margin="0,0,-0.167,0">
+                    <Border Margin="6,6,6,12" Background="#FF646464" Height="37" CornerRadius="5" BorderThickness="1" d:LayoutOverrides="Height, TopPosition, BottomPosition" >
+                        <TextBlock x:Name="textBlock" TextWrapping="Wrap" Style="{StaticResource TitleTextBlockStyle}" SelectionHighlightColor="#FF7F68B4" Margin="8.167,0,-0.5,-1.167" Foreground="Black" VerticalAlignment="Center">
+            				<Run Text="Active Tutor"/>
+            				<Run/>
+                        </TextBlock>
+                    </Border>
+                    <ListView 
+                        RenderTransformOrigin="0.501,0.587" Height="500" Margin="6,0"
+                        x:Name="PreliminaryTutorList"
+                        ItemTemplate="{StaticResource TutorListTemplate}"
+                        ItemsSource="{Binding PreliminaryTutors}">                       
+                    </ListView>
+                </StackPanel>
             </DataTemplate>
         </HubSection>
     </Hub>
