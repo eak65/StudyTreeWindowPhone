@@ -2,7 +2,6 @@
 using App1.Model.Logic;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -25,31 +24,20 @@ namespace App1.Student
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class StudySessionPage : Page
+    public sealed partial class StudentCreateStudySessionPage : Page
     {
         private NavigationHelper navigationHelper;
-        private ObservableDictionary defaultViewModel = new ObservableDictionary();
-        private DataManager dataManager = DataManager.shared();
-        private ObservableCollection<StudySession> _activeSessions = new ObservableCollection<StudySession>();
-        private ListView _sessionListView;
+        private StudentCreateStudySessionViewModel defaultViewModel = new StudentCreateStudySessionViewModel();
 
-        public StudySessionPage()
+        public StudentCreateStudySessionPage()
         {
             this.InitializeComponent();
 
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
-
-            foreach(StudySession s in dataManager.myself.StudentStudySessions)
-            {
-                if(s.TypeCode != 5)
-                {
-                    _activeSessions.Add(s);
-                }
-            }
-            defaultViewModel.Add("StudySessions", _activeSessions);
-            _sessionListView = StudentStudySessionList;
+            defaultViewModel = new StudentCreateStudySessionViewModel();
+            this.DataContext = defaultViewModel;
         }
 
         /// <summary>
@@ -64,7 +52,7 @@ namespace App1.Student
         /// Gets the view model for this <see cref="Page"/>.
         /// This can be changed to a strongly typed view model.
         /// </summary>
-        public ObservableDictionary DefaultViewModel
+        public StudentCreateStudySessionViewModel DefaultViewModel
         {
             get { return this.defaultViewModel; }
         }
@@ -123,15 +111,24 @@ namespace App1.Student
 
         #endregion
 
-        private void AddStudentStudySession_Click(object sender, RoutedEventArgs e)
+        private void StudentSelectClassButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(StudentCreateStudySessionPage));
+
         }
 
-        private void StudentStudySessionList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void StudentSubmitNewSessionButton_Click(object sender, RoutedEventArgs e)
         {
-            StudySession selectedSession = _sessionListView.SelectedItem as StudySession;
-            this.Frame.Navigate(typeof(StudentDetailStudySession), selectedSession.StudySessionId);
+
+        }
+
+        private void IncreaseTimeButton_Click(object sender, RoutedEventArgs e)
+        {
+            defaultViewModel.CurrentTime += 10;
+        }
+
+        private void DecreaseTimeButton_Click(object sender, RoutedEventArgs e)
+        {
+            defaultViewModel.CurrentTime -= 10;
         }
     }
 }

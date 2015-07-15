@@ -1,17 +1,33 @@
 ﻿<Page
-    x:Class="App1.Student.StudySessionPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:App1.Student"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Self}}"
+    xmlns:SampleData="using:Blend.SampleData.SampleDataSource"
+    x:Class="App1.Student.StudySessionPage"
+    DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Mode=Self}}"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-    
+
     <Page.Resources>
         <DataTemplate x:Key="SessionDatatemplate">
-            <TextBlock Text="{Binding SubjectName}"></TextBlock>
+            <StackPanel Width="341" Margin="10,5,10.667,6.333"
+                    Background="Turquoise">
+                    <TextBlock Text="{Binding SubjectName}"
+                               Margin="5,0,0,0"
+                               Style="{ThemeResource TitleTextBlockStyle}"
+                               FontSize="20"
+                               Foreground="Gray"
+                               HorizontalAlignment="Left"
+                               />
+                    <TextBlock Text="{Binding CourseName}" 
+                               Style="{ThemeResource TitleTextBlockStyle}"
+                               FontSize="12"
+                               Margin="5,0,0,0"
+                               Foreground="Gray"
+                               ></TextBlock>
+            </StackPanel>
         </DataTemplate>
     </Page.Resources>
 
@@ -35,24 +51,35 @@
         </StackPanel>
 
         <!--TODO: Content should be placed within the following grid-->
-        <Grid Grid.Row="3" x:Name="ContentRoot" Margin="19,9.5,19,0">
+        <Grid Grid.Row="3" Grid.Column="1" x:Name="ContentRoot" Margin="19,9.5,19,0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
             <TextBlock x:Name="StudentStudySessionLabel" HorizontalAlignment="Center" Grid.Row="0" Style="{ThemeResource GroupHeaderTextBlockStyle}">
-                Active Session
+				<Run Text="Active Session"/>
             </TextBlock>
-            <TextBlock x:Name="AddStudentStudySession" HorizontalAlignment="Center" Grid.Row="1" Style="{ThemeResource ControlHeaderTextBlockStyle}">
-                Create Study Session
-            </TextBlock>
-            <ListView x:Name="StudentStudySessionList" Grid.Row="2"
-                      VerticalAlignment="Top"
-                      ItemTemplate="{StaticResource SessionDatatemplate}"
-                      ItemsSource="{Binding StudySessions}">
-                    
-            </ListView>
+            <Button x:Name="AddStudentStudySession" 
+                    Grid.Column="0" HorizontalAlignment="Center"
+                    Grid.Row="1"
+                    Margin="10,5,10.667,6.333"
+                    Content="Create new Session"
+                    Foreground="White"
+                    BorderBrush="Red"
+                    Background="Red"
+                    Width="341" Click="AddStudentStudySession_Click">
+            </Button>
+            <ListView 
+                x:Name="StudentStudySessionList" 
+                Grid.Row="2"
+                SelectionChanged="StudentStudySessionList_SelectionChanged"
+				VerticalAlignment="Top"
+				ItemTemplate="{StaticResource SessionDatatemplate}"
+				ItemsSource="{Binding StudySessions}"/>
         </Grid>
     </Grid>
 </Page>
