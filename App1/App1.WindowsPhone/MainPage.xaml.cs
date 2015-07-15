@@ -22,6 +22,7 @@ using Windows.UI.Xaml.Navigation;
 using App1.Model.Transfer;
 using App1.SignalR;
 using RestSharp.Portable;
+using App1.Model.Logic;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkID=390556
 
@@ -44,8 +45,16 @@ namespace App1
            this.navigationHelper = new NavigationHelper(this);
            this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
            this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
+            loadUniversity();
+        }
 
-
+        public async void loadUniversity()
+        {
+            if (DataManager.shared().University != null)
+            {
+                StResponse response = await RequestHandler.Shared().getUniversity();
+                DataManager.shared().University = response.Response as University;
+            }
         }
 
         public NavigationHelper NavigationHelper

@@ -16,6 +16,7 @@ namespace App1
         public User myself { get; set; }
         public StudentMessageHandler studentMessageHandler;
         public TutorMessageHandler tutorMessageHandler;
+        public University University { get; set; }
 
         public static DataManager shared()
         {
