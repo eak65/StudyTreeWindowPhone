@@ -28,7 +28,13 @@ namespace App1
             private static string mainUrl ="http://studytree2.azurewebsites.net/api/";
             public event EventHandler DataReceivedHandler = null;
             RestClient client = new RestClient(Constants.url);
+           static private RequestHandler _handler;
 
+            static public RequestHandler Shared()
+            {
+                _handler = new RequestHandler();
+                return _handler;
+            }
             private RestRequest getRequest(string url, HttpMethod method)
             {
                 var request = new RestRequest(url, method);
