@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Graphics.Display;
@@ -41,6 +42,7 @@ namespace App1.Student
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
 
+            loadInformation();
             foreach(StudySession s in dataManager.myself.StudentStudySessions)
             {
                 if(s.TypeCode != 5)
@@ -50,6 +52,20 @@ namespace App1.Student
             }
             defaultViewModel.Add("StudySessions", _activeSessions);
             _sessionListView = StudentStudySessionList;
+        }
+
+        public async Task loadInformation()
+        {
+            await RequestHandler.Shared().updateInformation();
+            _activeSessions.Clear();
+            foreach (StudySession s in dataManager.myself.StudentStudySessions)
+            {
+                if (s.TypeCode != 5)
+                {
+                    _activeSessions.Add(s);
+                }
+            }
+            defaultViewModel.Add("StudySessions", _activeSessions);
         }
 
         /// <summary>
@@ -113,7 +129,7 @@ namespace App1.Student
         /// handlers that cannot cancel the navigation request.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            this.navigationHelper.OnNavigatedTo(e);
+            this.navigationHelper.OnNavigatedTo(e);         
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)

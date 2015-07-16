@@ -138,7 +138,7 @@ namespace App1.Student
             Frame.Navigate(typeof(UniversityCourseListPage));
         }
 
-        private void StudentSubmitNewSessionButton_Click(object sender, RoutedEventArgs e)
+        private async void StudentSubmitNewSessionButton_Click(object sender, RoutedEventArgs e)
         {
             StudySessionModel model = new StudySessionModel();
             model.CourseName = defaultViewModel.SelectedCourse;
@@ -147,7 +147,9 @@ namespace App1.Student
             model.TimeRequested = defaultViewModel.CurrentTime.ToString();
             model.SubjectName = defaultViewModel.SubjecTitle;
 
+            await RequestHandler.Shared().postStudentSubject(new PostSubjectModel(model.CourseName));
             RequestHandler.Shared().postStudySession(model);
+            Frame.Navigate(typeof(StudySessionPage));
         }
 
         private void IncreaseTimeButton_Click(object sender, RoutedEventArgs e)
