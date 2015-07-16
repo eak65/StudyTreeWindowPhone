@@ -121,6 +121,7 @@ namespace App1.Student
             ListView lv = sender as ListView;
             Course c = lv.SelectedItem as Course;
             StudentCreateStudySessionPage.staticVM.SelectedCourse = c.Title;
+            StudentCreateStudySessionPage.staticVM.SubjecTitle = c.Subject.UniversitySubjectName;
             Frame.GoBack();
         }
     }

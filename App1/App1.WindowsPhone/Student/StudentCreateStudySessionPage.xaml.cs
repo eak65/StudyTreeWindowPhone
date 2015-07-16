@@ -79,6 +79,7 @@ namespace App1.Student
                 StudentCreateStudySessionViewModel newModel = e.PageState["ViewModel"] as StudentCreateStudySessionViewModel;
                 defaultViewModel.CurrentTime = newModel.CurrentTime;
                 defaultViewModel.SelectedCourse = newModel.SelectedCourse;
+                defaultViewModel.SubjecTitle = newModel.SubjecTitle;
             }
         }
 
@@ -144,7 +145,7 @@ namespace App1.Student
             model.StudentId = DataManager.shared().myself.PersonId;
             model.Location = "POINT(39.9540 -75.1880)";
             model.TimeRequested = defaultViewModel.CurrentTime.ToString();
-            model.SubjectName = "Culinary Arts";
+            model.SubjectName = defaultViewModel.SubjecTitle;
 
             RequestHandler.Shared().postStudySession(model);
         }

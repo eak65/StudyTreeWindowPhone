@@ -23,6 +23,7 @@ namespace App1.Student
             {
                 foreach(Course c in s.UniversityCourses)
                 {
+                    c.Subject = s;
                     _courses.Add(c);
                 }
             }

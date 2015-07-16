@@ -17,6 +17,7 @@ namespace App1.Student
             _session.TimeRequested = 60;
         }
 
+        public String SubjecTitle { get; set; }
         public String SelectedCourse
         {
             get { return _session.CourseName; }
