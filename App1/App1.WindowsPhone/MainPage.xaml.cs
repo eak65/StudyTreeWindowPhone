@@ -23,6 +23,7 @@ using App1.Model.Transfer;
 using App1.SignalR;
 using RestSharp.Portable;
 using App1.Model.Logic;
+using System.Threading.Tasks;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkID=390556
 
@@ -45,16 +46,19 @@ namespace App1
            this.navigationHelper = new NavigationHelper(this);
            this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
            this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
-            loadUniversity();
         }
 
-        public async void loadUniversity()
+        public async Task loadUniversity()
         {
-            if (DataManager.shared().University != null)
-            {
-                StResponse response = await RequestHandler.Shared().getUniversity();
-                DataManager.shared().University = response.Response as University;
-            }
+            //if (DataManager.shared().University != null)
+            //{
+            //    Task<StResponse> responseTask = RequestHandler.Shared().getUniversity();
+            //    StResponse response = await responseTask;
+            //    DataManager.shared().University = response.Response as University;
+            //}
+            Task<StResponse> responseTask = RequestHandler.Shared().getUniversity();
+            StResponse response = await responseTask;
+            DataManager.shared().University = response.Response as University;
         }
 
         public NavigationHelper NavigationHelper
@@ -92,9 +96,10 @@ namespace App1
             // TODO: Save the unique state of the page here.
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedTo(e);
+            await loadUniversity();
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)

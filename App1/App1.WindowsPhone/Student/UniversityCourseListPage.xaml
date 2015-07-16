@@ -6,11 +6,16 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
+    DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Mode=Self}}"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Page.Resources>
-        
-        <DataTemplate>
-            
+        <DataTemplate x:Key="ListViewControlTemplate1">
+            <Border Background="#FF1ABC9C" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin" Height="69" Width="319">
+                <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" d:LayoutOverrides="LeftPosition, RightPosition, TopPosition, BottomPosition">
+                    <TextBlock x:Name="SubjectNameTextBlock" TextWrapping="Wrap" Text="{Binding Title}" Style="{StaticResource ListViewItemTextBlockStyle}" FontSize="16" Foreground="Black" RenderTransformOrigin="0.908,0.507" HorizontalAlignment="Left" Margin="16,8,0,0"/>
+                    <TextBlock x:Name="CourseNameTextBlock" TextWrapping="Wrap" Text="{Binding Description}" Style="{StaticResource ListViewItemTextBlockStyle}" FontSize="16" Foreground="Black" HorizontalAlignment="Center" Margin="16,0,0,0"/>
+                </StackPanel>
+            </Border>
         </DataTemplate>
     </Page.Resources>
 
@@ -43,15 +48,24 @@
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            
+
             <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource ListViewItemTextBlockStyle}">Search</TextBlock>
-            <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="1" Margin="8,0,0,0" BorderThickness="1">
+            <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="1" Margin="8,0,0,0" Text="{Binding SearchPhrase, Mode=TwoWay}" BorderThickness="1" TextChanged="TextBox_TextChanged">
             </TextBox>
-            
+
             <ListView Grid.Row="1" Grid.Column="0"
                       Grid.ColumnSpan="2"
-                      ItemsSource="{Binding DisplayCourses}">
-                
+                      ItemTemplate="{StaticResource ListViewControlTemplate1}"
+                      ItemsSource="{Binding DisplayCourses}" HorizontalAlignment="Center" Margin="0,8,0,0" VerticalAlignment="Top" SelectionChanged="ListView_SelectionChanged">
+                <ListView.Header>
+                    <TextBlock Text="Courses" Style="{StaticResource TitleTextBlockStyle}"></TextBlock>
+                </ListView.Header>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="Padding" Value="5,5,5,5"/>
+                        <Setter Property="Margin" Value="5,5,5,5"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
             </ListView>
         </Grid>
     </Grid>

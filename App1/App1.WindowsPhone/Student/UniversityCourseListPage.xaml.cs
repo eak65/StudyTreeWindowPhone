@@ -1,4 +1,5 @@
 ﻿using App1.Common;
+using App1.Model.Logic;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -26,7 +27,7 @@ namespace App1.Student
     public sealed partial class UniversityCourseListPage : Page
     {
         private NavigationHelper navigationHelper;
-        private ObservableDictionary defaultViewModel = new ObservableDictionary();
+        private UniversityCoursesListViewModel defaultViewModel = new UniversityCoursesListViewModel(DataManager.shared().University);
 
         public UniversityCourseListPage()
         {
@@ -35,6 +36,7 @@ namespace App1.Student
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
+            this.DataContext = defaultViewModel;
         }
 
         /// <summary>
@@ -49,7 +51,7 @@ namespace App1.Student
         /// Gets the view model for this <see cref="Page"/>.
         /// This can be changed to a strongly typed view model.
         /// </summary>
-        public ObservableDictionary DefaultViewModel
+        public UniversityCoursesListViewModel DefaultViewModel
         {
             get { return this.defaultViewModel; }
         }
@@ -107,5 +109,19 @@ namespace App1.Student
         }
 
         #endregion
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            TextBox queryBox = sender as TextBox;
+            defaultViewModel.SearchPhrase = queryBox.Text;
+        }
+
+        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ListView lv = sender as ListView;
+            Course c = lv.SelectedItem as Course;
+            StudentCreateStudySessionPage.staticVM.SelectedCourse = c.Title;
+            Frame.GoBack();
+        }
     }
 }

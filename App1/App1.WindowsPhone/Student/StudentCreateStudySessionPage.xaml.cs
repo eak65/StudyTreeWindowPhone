@@ -1,7 +1,9 @@
 ﻿using App1.Common;
 using App1.Model.Logic;
+using App1.Model.Transfer;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -28,6 +30,7 @@ namespace App1.Student
     {
         private NavigationHelper navigationHelper;
         private StudentCreateStudySessionViewModel defaultViewModel = new StudentCreateStudySessionViewModel();
+        public static StudentCreateStudySessionViewModel staticVM;
 
         public StudentCreateStudySessionPage()
         {
@@ -38,6 +41,7 @@ namespace App1.Student
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
             defaultViewModel = new StudentCreateStudySessionViewModel();
             this.DataContext = defaultViewModel;
+            staticVM = defaultViewModel;
         }
 
         /// <summary>
@@ -70,6 +74,12 @@ namespace App1.Student
         /// session.  The state will be null the first time a page is visited.</param>
         private void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
+            if (e.PageState != null && e.PageState.ContainsKey("ViewModel"))
+            {
+                StudentCreateStudySessionViewModel newModel = e.PageState["ViewModel"] as StudentCreateStudySessionViewModel;
+                defaultViewModel.CurrentTime = newModel.CurrentTime;
+                defaultViewModel.SelectedCourse = newModel.SelectedCourse;
+            }
         }
 
         /// <summary>
@@ -82,6 +92,7 @@ namespace App1.Student
         /// serializable state.</param>
         private void NavigationHelper_SaveState(object sender, SaveStateEventArgs e)
         {
+            e.PageState.Add("ViewModel", defaultViewModel);
         }
 
         #region NavigationHelper registration
@@ -102,6 +113,16 @@ namespace App1.Student
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedTo(e);
+            SelectedCourseTextBlock.Visibility = Visibility.Visible;
+            //if (e.NavigationMode == NavigationMode.Back) {
+            //    Course c = e.Parameter as Course;
+            //    if(c != null)
+            //    {
+            //        defaultViewModel.SelectedCourse = c.Title;
+            //        this.navigationHelper.OnNavigatedTo(e);
+            //        SelectedCourseTextBlock.Visibility = Visibility.Visible;
+            //    }
+            //}
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -113,12 +134,19 @@ namespace App1.Student
 
         private void StudentSelectClassButton_Click(object sender, RoutedEventArgs e)
         {
-
+            Frame.Navigate(typeof(UniversityCourseListPage));
         }
 
         private void StudentSubmitNewSessionButton_Click(object sender, RoutedEventArgs e)
         {
+            StudySessionModel model = new StudySessionModel();
+            model.CourseName = defaultViewModel.SelectedCourse;
+            model.StudentId = DataManager.shared().myself.PersonId;
+            model.Location = "POINT(39.9540 -75.1880)";
+            model.TimeRequested = defaultViewModel.CurrentTime.ToString();
+            model.SubjectName = "Culinary Arts";
 
+            RequestHandler.Shared().postStudySession(model);
         }
 
         private void IncreaseTimeButton_Click(object sender, RoutedEventArgs e)

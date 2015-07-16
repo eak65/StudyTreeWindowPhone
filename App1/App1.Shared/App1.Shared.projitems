@@ -78,9 +78,6 @@
     <Content Include="$(MSBuildThisFileDirectory)DataModel\SampleData.json" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="$(MSBuildThisFileDirectory)Model\ViewModel\" />
-  </ItemGroup>
-  <ItemGroup>
     <PRIResource Include="$(MSBuildThisFileDirectory)StringResource.resw" />
   </ItemGroup>
 </Project>

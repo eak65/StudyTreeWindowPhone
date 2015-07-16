@@ -4,12 +4,12 @@ using System.Text;
 
 namespace App1.Model.Logic
 {
-   public class Course
+   public class Course : BaseINPC
     {
-        public String Title;
-        public String Description;
+        public String Title { get; set; }
+        public String Description { get; set; }
         public int UniversityCourseId;
-        public Subject Subject;
+        public Subject Subject { get; set; }
         public Boolean IsUniversityCourse;
     }
 }

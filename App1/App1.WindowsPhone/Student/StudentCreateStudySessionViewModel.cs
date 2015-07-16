@@ -17,6 +17,16 @@ namespace App1.Student
             _session.TimeRequested = 60;
         }
 
+        public String SelectedCourse
+        {
+            get { return _session.CourseName; }
+            set
+            {
+                _session.CourseName = value;
+                NotifyPropertyChanged("SelectedCourse");
+            }
+        }
+
         public StudySession Session
         {
             get { return _session; }
