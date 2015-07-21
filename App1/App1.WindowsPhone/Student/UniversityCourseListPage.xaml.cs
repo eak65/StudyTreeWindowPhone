@@ -1,4 +1,5 @@
 ﻿using App1.Common;
+using App1.Facilator;
 using App1.Model.Logic;
 using System;
 using System.Collections.Generic;
@@ -28,6 +29,7 @@ namespace App1.Student
     {
         private NavigationHelper navigationHelper;
         private UniversityCoursesListViewModel defaultViewModel = new UniversityCoursesListViewModel(DataManager.shared().University);
+        private Course _changeCourse;
 
         public UniversityCourseListPage()
         {
@@ -120,9 +122,21 @@ namespace App1.Student
         {
             ListView lv = sender as ListView;
             Course c = lv.SelectedItem as Course;
-            StudentCreateStudySessionPage.staticVM.SelectedCourse = c.Title;
-            StudentCreateStudySessionPage.staticVM.SubjecTitle = c.Subject.UniversitySubjectName;
-            Frame.GoBack();
+
+            if(c!= null)
+            {
+                if (_changeCourse == null)
+                {
+                    _changeCourse = c;
+                    UniversityClassFacilator.Shared.SelectedCourse = c;
+                    Frame.GoBack();
+                }
+                else if (_changeCourse.Title != c.Title)
+                {
+                    UniversityClassFacilator.Shared.SelectedCourse = c;
+                    Frame.GoBack();
+                }               
+            } 
         }
     }
 }

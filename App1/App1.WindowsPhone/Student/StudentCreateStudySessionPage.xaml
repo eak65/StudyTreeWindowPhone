@@ -44,7 +44,7 @@
             <Button x:Name="DecreaseTimeButton" Content="-" HorizontalAlignment="Left" Margin="51,147.5,0,0" Grid.Row="3" VerticalAlignment="Top" Click="DecreaseTimeButton_Click" Foreground="Black" Background="#FFD1D1D1"/>
             <Button x:Name="IncreaseTimeButton" Content="+" HorizontalAlignment="Left" Margin="202,147.5,0,0" Grid.Row="3" VerticalAlignment="Top" Foreground="Black" Background="#FFD1D1D1" Click="IncreaseTimeButton_Click"/>
             <Button x:Name="StudentSubmitNewSessionButton" Content="Submit" HorizontalAlignment="Center" Margin="0,297.833,0,0" Grid.Row="3" VerticalAlignment="Top" Width="155" Background="#FF1ABC9C" BorderThickness="0" Click="StudentSubmitNewSessionButton_Click"/>
-            <TextBlock Text="{Binding SelectedCourse}" x:Name="SelectedCourseTextBlock" Visibility="Collapsed" Margin="0" Grid.Row="3" TextWrapping="Wrap" VerticalAlignment="Top" d:LayoutOverrides="LeftPosition, RightPosition" Style="{StaticResource BodyTextBlockStyle}" HorizontalAlignment="Center">
+            <TextBlock Text="{Binding SelectedCourseName}" x:Name="SelectedCourseTextBlock" Visibility="Collapsed" Margin="0" Grid.Row="3" TextWrapping="Wrap" VerticalAlignment="Top" d:LayoutOverrides="LeftPosition, RightPosition" Style="{StaticResource BodyTextBlockStyle}" HorizontalAlignment="Center">
             </TextBlock>
 
         </Grid>

@@ -10,6 +10,7 @@ namespace App1.Student
     public class StudentCreateStudySessionViewModel : BaseINPC
     {
         private StudySession _session;
+        private Course _selectedCourse;
 
         public StudentCreateStudySessionViewModel()
         {
@@ -18,12 +19,23 @@ namespace App1.Student
         }
 
         public String SubjecTitle { get; set; }
-        public String SelectedCourse
+        public String SelectedCourseName
         {
             get { return _session.CourseName; }
             set
             {
                 _session.CourseName = value;
+                NotifyPropertyChanged("SelectedCourseName");
+            }
+        }
+
+        public Course SelectedCourse
+        {
+            get { return _selectedCourse; }
+            set
+            {
+                _selectedCourse = value;
+                _session.CourseName = _selectedCourse.Title;
                 NotifyPropertyChanged("SelectedCourse");
             }
         }

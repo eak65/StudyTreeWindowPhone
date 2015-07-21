@@ -419,10 +419,12 @@ namespace App1
                 }
             }
 
-    
-            public async Task<StResponse> postStudySession(StudySessionModel sessionModel)
+
+        public async Task<StResponse> postStudySession(StudySessionModel sessionModel)
+        {
+            try
             {
-               var request = getRequest("/api/StudentSession/PostCreateStudySession", HttpMethod.Post);
+                var request = getRequest("/api/StudentSession/PostCreateStudySession", HttpMethod.Post);
                 request.AddJsonBody(sessionModel);
                 IRestResponse response = await client.Execute(request);
                 if (response.IsSuccess)
@@ -433,8 +435,14 @@ namespace App1
                 {
                     return ResponseFactory.createErrorResponse();
                 }
-
             }
+            catch(HttpRequestException ex)
+            {
+                StResponse response = ResponseFactory.createErrorResponse();
+                response.ErrorDetails = ex.Message;
+                return response;
+            }
+        }
            public async Task<StResponse>   postStudentMessage(TreeMessage messageModel)
             {
                  var request = getRequest("/api/StudentSession/PostMessage", HttpMethod.Post);
@@ -452,9 +460,11 @@ namespace App1
 
    
         public async Task<StResponse>   postStudentSubject( PostSubjectModel model )
+        {
+            var request = getRequest("/api/Subject/PostStudentSubject", HttpMethod.Post);
+            request.AddJsonBody(model);
+            try
             {
-                var request = getRequest("/api/Subject/PostStudentSubject", HttpMethod.Post);
-                request.AddJsonBody(model);
                 IRestResponse response = await client.Execute(request);
                 if (response.IsSuccess)
                 {
@@ -465,6 +475,13 @@ namespace App1
                     return ResponseFactory.createErrorResponse();
                 }
             }
+            catch (HttpRequestException ex)
+            {
+                StResponse response = ResponseFactory.createErrorResponse();
+                response.ErrorDetails = ex.Message;
+                return response;
+            }
+        }
 
 
             public async Task<StResponse> putStudentAccept(AcceptModel acceptModel)

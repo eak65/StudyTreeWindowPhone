@@ -1,4 +1,5 @@
 ﻿using App1.Common;
+using App1.Facilator;
 using App1.Model.Logic;
 using App1.Model.Transfer;
 using System;
@@ -30,7 +31,6 @@ namespace App1.Student
     {
         private NavigationHelper navigationHelper;
         private StudentCreateStudySessionViewModel defaultViewModel = new StudentCreateStudySessionViewModel();
-        public static StudentCreateStudySessionViewModel staticVM;
 
         public StudentCreateStudySessionPage()
         {
@@ -41,7 +41,7 @@ namespace App1.Student
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
             defaultViewModel = new StudentCreateStudySessionViewModel();
             this.DataContext = defaultViewModel;
-            staticVM = defaultViewModel;
+            UniversityClassFacilator.Shared.CourseAdded += UpdateSelectedCourse;
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace App1.Student
             {
                 StudentCreateStudySessionViewModel newModel = e.PageState["ViewModel"] as StudentCreateStudySessionViewModel;
                 defaultViewModel.CurrentTime = newModel.CurrentTime;
-                defaultViewModel.SelectedCourse = newModel.SelectedCourse;
+                defaultViewModel.SelectedCourseName = newModel.SelectedCourseName;
                 defaultViewModel.SubjecTitle = newModel.SubjecTitle;
             }
         }
@@ -141,14 +141,14 @@ namespace App1.Student
         private async void StudentSubmitNewSessionButton_Click(object sender, RoutedEventArgs e)
         {
             StudySessionModel model = new StudySessionModel();
-            model.CourseName = defaultViewModel.SelectedCourse;
+            model.CourseName = defaultViewModel.SelectedCourseName;
             model.StudentId = DataManager.shared().myself.PersonId;
             model.Location = "POINT(39.9540 -75.1880)";
             model.TimeRequested = defaultViewModel.CurrentTime.ToString();
             model.SubjectName = defaultViewModel.SubjecTitle;
 
-            await RequestHandler.Shared().postStudentSubject(new PostSubjectModel(model.CourseName));
-            RequestHandler.Shared().postStudySession(model);
+            StResponse response1 = await RequestHandler.Shared().postStudentSubject(new PostSubjectModel(model.CourseName));
+            StResponse response = await RequestHandler.Shared().postStudySession(model);
             Frame.Navigate(typeof(StudySessionPage));
         }
 
@@ -160,6 +160,11 @@ namespace App1.Student
         private void DecreaseTimeButton_Click(object sender, RoutedEventArgs e)
         {
             defaultViewModel.CurrentTime -= 10;
+        }
+
+        private void UpdateSelectedCourse(Course c)
+        {
+            defaultViewModel.SelectedCourse = c;
         }
     }
 }
