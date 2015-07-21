@@ -12,9 +12,9 @@ namespace App1.Model.Logic
 
         public ObservableCollection<TreeMessage> Messages;
         public double PersonId;
-        public String FirstName;
+        public String FirstName { get; set; }
         public String LastName;
-        public String Email;
+        public String Email { get; set; }
         public String password;
         public TreeMessage LastMessage
         {
@@ -25,8 +25,8 @@ namespace App1.Model.Logic
                 NotifyPropertyChanged("LastMessage");
             }
         }
-        public double ReviewAverage;
-        public String UserName;
+        public double ReviewAverage { get; set; }
+        public String UserName { get; set; }
        // public IList<Review> Reviews;
         public ObservableCollection<Subject> Subjects;
         public String ProfilePhotoUri;

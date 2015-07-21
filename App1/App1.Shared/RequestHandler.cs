@@ -134,7 +134,7 @@ namespace App1
 */
            public async Task<StResponse> getTutorMessages(int sessionId)
             {
-                      var request = getRequest("/api/TutorSession/GetMessages",HttpMethod.Get);
+               var request = getRequest("/api/TutorSession/GetMessages",HttpMethod.Get);
                request.AddQueryParameter("sessionId", sessionId);
                IRestResponse<IList<TreeMessage>> response = await client.Execute<IList<TreeMessage>>(request);
                if (response.IsSuccess)
@@ -608,19 +608,37 @@ namespace App1
             }
             }
 
-        /*
         public async Task<StResponse>   getSearchForTutors(int sessionId)
+        {
+            try
             {
-              var request = getRequest("/api/Search/GetNotifiableTutors", HttpMethod.Get);
-            request.AddQueryParameter("studySessionId", sessionId);
-
+                var request = getRequest("/api/Search/GetNotifiableTutors", HttpMethod.Get);
+                request.AddQueryParameter("studySessionId", sessionId);
+                IRestResponse<IList<PreliminaryTutor>> response = await client.Execute<IList<PreliminaryTutor>>(request);
+                if (response.IsSuccess)
+                {
+                    return ResponseFactory.createSuccessResponse(response.Data);
+                }
+                else
+                {
+                    return ResponseFactory.createErrorResponse();
+                }
             }
-            */
-            public async Task<StResponse> postSuggestTutor(SuggestModel model)
+            catch (HttpRequestException ex)
             {
-              var request = getRequest("/api/EventNotification/PostSuggestionTutor", HttpMethod.Post);
+                StResponse res = ResponseFactory.createErrorResponse();
+                res.ErrorDetails = ex.Message;
+                return res;
+            }
+
+        }
+        public async Task<StResponse> postSuggestTutor(SuggestModel model)
+        {
+            try
+            {
+                var request = getRequest("/api/EventNotification/PostSuggestionTutor", HttpMethod.Post);
                 request.AddJsonBody(model);
-                IRestResponse response =await client.Execute(request);
+                IRestResponse response = await client.Execute(request);
                 if (response.IsSuccess)
                 {
                     return ResponseFactory.createSuccessResponse();
@@ -630,43 +648,50 @@ namespace App1
                     return ResponseFactory.createErrorResponse();
                 }
             }
+            catch(HttpRequestException ex)
+            {
+                StResponse res = ResponseFactory.createErrorResponse();
+                res.ErrorDetails = ex.Message;
+                return res;
+            }
+        }
 
-    /*
-    Subject Calls
-     */
-
-
-
-
-       //  @PUT("/api/BrainTree/UpdateMerchant")
-    // Merchant Calls
-/*        @PUT("/api/BrainTree/UpdateMerchant")
-        public async void  updateMerchant(@Body Merchant merchant,Callback<Response>cb);
-
-        @GET("/api/BrainTree/GetMerchant")
-        public async void  getMerchant(Callback<MerchantAccount>merchantCallback);
-        @POST("/api/BrainTree/CreateMerchant")
-        public async void  createMerchant(@Body MerchantCreateModel model, Callback<Response>cb);
-
-    // CUSTOMER BRAINTREE CALLS
-        @PUT("/api/BrainTree/PutCardDefault")
-        public async void  putCardDefault(@Query("cardToken") String cardToken,Callback<Response>cb);
-        @DELETE("/api/BrainTree/DeleteCreditCard")
-        public async void  deleteCreditCard(@Query("Token") String token,Callback<Response>cb);
-        @POST("/api/BrainTree/StorePaymentMethod")
-        public async void  postNonceToCardVault(@Body PaymentModel nonce,Callback<Response>cb);
-        @GET("/api/BrainTree/GetCustomer")
-        public async void  getCustomer(Callback<Map>cardModel);
-        @GET("/api/BrainTree/GetClientToken")
-        public async void  getClientToken(Callback<ClientTokenModel>cb);
- * */
+        /*
+        Subject Calls
+         */
 
 
 
 
+        //  @PUT("/api/BrainTree/UpdateMerchant")
+        // Merchant Calls
+        /*        @PUT("/api/BrainTree/UpdateMerchant")
+                public async void  updateMerchant(@Body Merchant merchant,Callback<Response>cb);
+
+                @GET("/api/BrainTree/GetMerchant")
+                public async void  getMerchant(Callback<MerchantAccount>merchantCallback);
+                @POST("/api/BrainTree/CreateMerchant")
+                public async void  createMerchant(@Body MerchantCreateModel model, Callback<Response>cb);
+
+            // CUSTOMER BRAINTREE CALLS
+                @PUT("/api/BrainTree/PutCardDefault")
+                public async void  putCardDefault(@Query("cardToken") String cardToken,Callback<Response>cb);
+                @DELETE("/api/BrainTree/DeleteCreditCard")
+                public async void  deleteCreditCard(@Query("Token") String token,Callback<Response>cb);
+                @POST("/api/BrainTree/StorePaymentMethod")
+                public async void  postNonceToCardVault(@Body PaymentModel nonce,Callback<Response>cb);
+                @GET("/api/BrainTree/GetCustomer")
+                public async void  getCustomer(Callback<Map>cardModel);
+                @GET("/api/BrainTree/GetClientToken")
+                public async void  getClientToken(Callback<ClientTokenModel>cb);
+         * */
 
 
-            public async Task CreatePerson(App1.Model.Logic.CreatePerson person)
+
+
+
+
+        public async Task CreatePerson(App1.Model.Logic.CreatePerson person)
             {
                 using (var client = new HttpClient())
                 {

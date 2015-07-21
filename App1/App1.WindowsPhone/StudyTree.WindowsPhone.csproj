@@ -92,6 +92,9 @@
     <Compile Include="Student\StudentNotificationsPage.xaml.cs">
       <DependentUpon>StudentNotificationsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Student\StudentNotifyTutorPage.xaml.cs">
+      <DependentUpon>StudentNotifyTutorPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Student\StudySessionPage.xaml.cs">
       <DependentUpon>StudySessionPage.xaml</DependentUpon>
     </Compile>
@@ -142,6 +145,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Student\StudentNotificationsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Student\StudentNotifyTutorPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

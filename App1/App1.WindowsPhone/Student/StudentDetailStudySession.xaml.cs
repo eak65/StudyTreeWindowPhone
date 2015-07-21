@@ -150,6 +150,11 @@ namespace App1.Student
             }
         }
 
+        private void FindTutorButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+           Frame.Navigate(typeof(StudentNotifyTutorPage), _session.StudySessionId);
+        }
+
         //public DependencyObject FindChildControl<T>(DependencyObject control, string ctrlName)
         //{
         //    int childNumber = VisualTreeHelper.GetChildrenCount(control);

@@ -146,8 +146,11 @@ namespace App1.Student
 
         private void StudentStudySessionList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            StudySession selectedSession = _sessionListView.SelectedItem as StudySession;
-            this.Frame.Navigate(typeof(StudentDetailStudySession), selectedSession.StudySessionId);
+            if(_sessionListView.SelectedItem != null)
+            {
+                StudySession selectedSession = _sessionListView.SelectedItem as StudySession;
+                this.Frame.Navigate(typeof(StudentDetailStudySession), selectedSession.StudySessionId);
+            }
         }
     }
 }

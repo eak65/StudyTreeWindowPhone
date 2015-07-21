@@ -1,13 +1,13 @@
 ﻿using App1.Common;
-using App1.Facilator;
 using App1.Model.Logic;
 using App1.Model.Transfer;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Graphics.Display;
@@ -27,21 +27,28 @@ namespace App1.Student
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class StudentCreateStudySessionPage : Page
+    public sealed partial class StudentNotifyTutorPage : Page
     {
         private NavigationHelper navigationHelper;
-        private StudentCreateStudySessionViewModel defaultViewModel = new StudentCreateStudySessionViewModel();
+        private ObservableCollection<PreliminaryTutor> tutors;
+        private int _sessionId;
+        private ObservableDictionary defaultViewModel = new ObservableDictionary();
 
-        public StudentCreateStudySessionPage()
+        public StudentNotifyTutorPage()
         {
             this.InitializeComponent();
 
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
-            defaultViewModel = new StudentCreateStudySessionViewModel();
-            this.DataContext = defaultViewModel;
-            UniversityClassFacilator.Shared.CourseAdded += UpdateSelectedCourse;
+        }
+
+        private async Task loadTutors()
+        {
+            StResponse response = await RequestHandler.Shared().getSearchForTutors(_sessionId);
+            List<PreliminaryTutor> t = response.Response as List<PreliminaryTutor>;
+            tutors = new ObservableCollection<PreliminaryTutor>(t);
+            defaultViewModel.Add("Tutors", tutors);
         }
 
         /// <summary>
@@ -56,7 +63,7 @@ namespace App1.Student
         /// Gets the view model for this <see cref="Page"/>.
         /// This can be changed to a strongly typed view model.
         /// </summary>
-        public StudentCreateStudySessionViewModel DefaultViewModel
+        public ObservableDictionary DefaultViewModel
         {
             get { return this.defaultViewModel; }
         }
@@ -74,13 +81,6 @@ namespace App1.Student
         /// session.  The state will be null the first time a page is visited.</param>
         private void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            if (e.PageState != null && e.PageState.ContainsKey("ViewModel"))
-            {
-                StudentCreateStudySessionViewModel newModel = e.PageState["ViewModel"] as StudentCreateStudySessionViewModel;
-                defaultViewModel.CurrentTime = newModel.CurrentTime;
-                defaultViewModel.SelectedCourseName = newModel.SelectedCourseName;
-                defaultViewModel.SubjecTitle = newModel.SubjecTitle;
-            }
         }
 
         /// <summary>
@@ -93,7 +93,6 @@ namespace App1.Student
         /// serializable state.</param>
         private void NavigationHelper_SaveState(object sender, SaveStateEventArgs e)
         {
-            e.PageState.Add("ViewModel", defaultViewModel);
         }
 
         #region NavigationHelper registration
@@ -114,16 +113,9 @@ namespace App1.Student
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedTo(e);
-            SelectedCourseTextBlock.Visibility = Visibility.Visible;
-            //if (e.NavigationMode == NavigationMode.Back) {
-            //    Course c = e.Parameter as Course;
-            //    if(c != null)
-            //    {
-            //        defaultViewModel.SelectedCourse = c.Title;
-            //        this.navigationHelper.OnNavigatedTo(e);
-            //        SelectedCourseTextBlock.Visibility = Visibility.Visible;
-            //    }
-            //}
+
+            _sessionId = (int)e.Parameter;
+            loadTutors();
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -133,41 +125,21 @@ namespace App1.Student
 
         #endregion
 
-        private void StudentSelectClassButton_Click(object sender, RoutedEventArgs e)
+        private async void Button_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            Frame.Navigate(typeof(UniversityCourseListPage));
-        }
-
-        private async void StudentSubmitNewSessionButton_Click(object sender, RoutedEventArgs e)
-        {
-            StudySessionModel model = new StudySessionModel();
-            model.CourseName = defaultViewModel.SelectedCourseName;
-            model.StudentId = DataManager.shared().myself.PersonId;
-            model.Location = "POINT(39.9540 -75.1880)";
-            model.TimeRequested = defaultViewModel.CurrentTime.ToString();
-            model.SubjectName = defaultViewModel.SubjecTitle;
-
-            StResponse response1 = await RequestHandler.Shared().postStudentSubject(new PostSubjectModel(model.CourseName));
-            StResponse response = await RequestHandler.Shared().postStudySession(model);
+            Button notify = sender as Button;
+            Grid root = notify.Parent as Grid;
+            PreliminaryTutor t = root.DataContext as PreliminaryTutor;
+            SuggestModel model = new SuggestModel(t.TutorId, _sessionId);
+            StResponse response = await RequestHandler.Shared().postSuggestTutor(model);
             if (response.IsSuccess)
             {
-                Frame.Navigate(typeof(StudySessionPage));
+                DataManager.shared().getStudySessionFromId(_sessionId).PreliminaryTutors.Add(t);
+                if (Frame.CanGoBack)
+                {
+                    Frame.GoBack();
+                }
             }
-        }
-
-        private void IncreaseTimeButton_Click(object sender, RoutedEventArgs e)
-        {
-            defaultViewModel.CurrentTime += 10;
-        }
-
-        private void DecreaseTimeButton_Click(object sender, RoutedEventArgs e)
-        {
-            defaultViewModel.CurrentTime -= 10;
-        }
-
-        private void UpdateSelectedCourse(Course c)
-        {
-            defaultViewModel.SelectedCourse = c;
         }
     }
 }

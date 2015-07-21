@@ -1,0 +1,77 @@
+﻿<Page
+    x:Class="App1.Student.StudentNotifyTutorPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:App1.Student"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Mode=Self}}"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    
+    <Page.Resources>
+        <DataTemplate x:Key="FindTutorTemplate">
+            <Grid x:Name="TutorListRoot">
+                <Grid Grid.Row="2" Grid.Column="3" Width="361">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="0.4*"></ColumnDefinition>
+                        <ColumnDefinition Width="0.6*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.Column="0" Grid.RowSpan="1" Grid.ColumnSpan="1" 
+                               HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource ListViewItemSubheaderTextBlockStyle}" Margin="8" Foreground="White">Rating</TextBlock>
+                    <TextBlock Text="{Binding ReviewAverage}" Grid.Row="1" Grid.Column="0" Grid.RowSpan="1" Grid.ColumnSpan="1" 
+                               HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource ListViewItemSubheaderTextBlockStyle}" Margin="8" Foreground="White">8.0</TextBlock>
+                    <TextBlock Text="{Binding FirstName}" Grid.Row="0" Grid.Column="1" Grid.RowSpan="1" Grid.ColumnSpan="1" 
+                               HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource TitleTextBlockStyle}" Margin="8,8,0,8">First Name</TextBlock>
+                    <TextBlock Text="{Binding UserName}" Grid.Row="1" Grid.Column="1" Grid.RowSpan="1" Grid.ColumnSpan="1" 
+                               HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource TitleTextBlockStyle}" Margin="8,8,0,8">User Name</TextBlock>
+                    <Button Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" Content="Notify" Tapped="Button_Tapped"></Button>
+                    
+                </Grid>
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
+
+    <Grid x:Name="LayoutRoot">
+
+        <Grid.ChildrenTransitions>
+            <TransitionCollection>
+                <EntranceThemeTransition/>
+            </TransitionCollection>
+        </Grid.ChildrenTransitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Title Panel -->
+        <StackPanel Grid.Row="0" Margin="19,0,0,0">
+            <TextBlock Text="StudyTree: Branch Out!" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,12,0,0"/>
+            <TextBlock Text="Notify Tutors" Margin="0,-6.5,0,26.5" Style="{ThemeResource HeaderTextBlockStyle}" CharacterSpacing="{ThemeResource PivotHeaderItemCharacterSpacing}"/>
+        </StackPanel>
+
+        <!--TODO: Content should be placed within the following grid-->
+        <Grid Grid.Row="1" x:Name="ContentRoot" Margin="19,9.5,19,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            
+            <ListView Grid.Row="0"
+                ItemsSource="{Binding Tutors}"
+                ItemTemplate="{StaticResource FindTutorTemplate}">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    </Style>
+                </ListView.ItemContainerStyle>
+            </ListView>
+        </Grid>
+    </Grid>
+</Page>
