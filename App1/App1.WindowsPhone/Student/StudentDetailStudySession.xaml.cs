@@ -135,7 +135,6 @@ namespace App1.Student
         private void activeTutorAccept_Tapped(object sender, TappedRoutedEventArgs e)
         {
             e.Handled = true;
-            Frame.Navigate(typeof(MainPage));
         }
 
         private async void prelimTutorAccept_Tapped(object sender, TappedRoutedEventArgs e)

@@ -151,7 +151,10 @@ namespace App1.Student
             StResponse response = await RequestHandler.Shared().postStudySession(model);
             if (response.IsSuccess)
             {
-                Frame.Navigate(typeof(StudySessionPage));
+                if (Frame.CanGoBack)
+                    Frame.GoBack();
+                else
+                    Frame.Navigate(typeof(StudySessionPage));
             }
         }
 
