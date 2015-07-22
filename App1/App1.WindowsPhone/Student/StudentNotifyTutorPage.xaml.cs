@@ -134,7 +134,6 @@ namespace App1.Student
             StResponse response = await RequestHandler.Shared().postSuggestTutor(model);
             if (response.IsSuccess)
             {
-                DataManager.shared().getStudySessionFromId(_sessionId).PreliminaryTutors.Add(t);
                 if (Frame.CanGoBack)
                 {
                     Frame.GoBack();

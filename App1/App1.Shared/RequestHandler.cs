@@ -576,9 +576,11 @@ namespace App1
 
             }
 
-            public async Task<StResponse> deleteStudentStudySession(int sessionId)
+        public async Task<StResponse> deleteStudentStudySession(int sessionId)
+        {
+            try
             {
-                     var request = getRequest("/api/StudentSession/DeleteStudySession", HttpMethod.Delete);
+                var request = getRequest("/api/StudentSession/DeleteStudySession", HttpMethod.Delete);
                 request.AddQueryParameter("sessionId", sessionId);
                 IRestResponse response = await client.Execute(request);
                 if (response.IsSuccess)
@@ -589,8 +591,15 @@ namespace App1
                 {
                     return ResponseFactory.createErrorResponse();
                 }
-
             }
+            catch (HttpRequestException ex)
+            {
+                StResponse res = ResponseFactory.createErrorResponse();
+                res.ErrorDetails = ex.Message;
+                return res;
+            }
+        }
+
         public async Task<StResponse>  deleteTutorFromStudySession(int sessionId,int tutorId)
             {
                var request = getRequest("/api/StudentSession/DeleteTutor", HttpMethod.Delete);

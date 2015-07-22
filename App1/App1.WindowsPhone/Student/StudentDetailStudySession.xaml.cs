@@ -8,6 +8,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Graphics.Display;
+using Windows.UI.Popups;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -155,30 +156,31 @@ namespace App1.Student
            Frame.Navigate(typeof(StudentNotifyTutorPage), _session.StudySessionId);
         }
 
-        //public DependencyObject FindChildControl<T>(DependencyObject control, string ctrlName)
-        //{
-        //    int childNumber = VisualTreeHelper.GetChildrenCount(control);
-        //    for (int i = 0; i < childNumber; i++)
-        //    {
-        //        DependencyObject child = VisualTreeHelper.GetChild(control, i);
-        //        FrameworkElement fe = child as FrameworkElement;
-        //        // Not a framework element or is null
-        //        if (fe == null) return null;
+        private async void DeleteSessionButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var dialog = new MessageDialog("Are you sure you want to delete the session?", "Confirmation");
+            dialog.Commands.Add(new UICommand("Delete", new UICommandInvokedHandler(CommandHandler)));
+            dialog.Commands.Add(new UICommand("Cancel", new UICommandInvokedHandler(CommandHandler)));
+            dialog.DefaultCommandIndex = 0;
+            dialog.CancelCommandIndex = 1;
 
-        //        if (child is T && fe.Name == ctrlName)
-        //        {
-        //            // Found the control so return
-        //            return child;
-        //        }
-        //        else
-        //        {
-        //            // Not found it - search children
-        //            DependencyObject nextLevel = FindChildControl<T>(child, ctrlName);
-        //            if (nextLevel != null)
-        //                return nextLevel;
-        //        }
-        //    }
-        //    return null;
-        //}
+            await dialog.ShowAsync();
+        }
+
+        private async void CommandHandler(IUICommand command)
+        {
+            var label = command.Label;
+
+            switch (label)
+            {
+                case "Delete":
+                    await RequestHandler.Shared().deleteStudentStudySession(_session.StudySessionId);
+                    DataManager.shared().myself.StudentStudySessions.Remove(_session);
+                    Frame.Navigate(typeof(StudySessionPage));
+                    break;
+                case "Cancel":
+                    break;           
+            }
+        }
     }
 }

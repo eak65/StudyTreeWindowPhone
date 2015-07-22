@@ -36,7 +36,9 @@ namespace App1.Student
             {
                 _selectedCourse = value;
                 _session.CourseName = _selectedCourse.Title;
+                SubjecTitle = _selectedCourse.Subject.UniversitySubjectName;
                 NotifyPropertyChanged("SelectedCourse");
+                NotifyPropertyChanged("SubjectTitle");
             }
         }
 
