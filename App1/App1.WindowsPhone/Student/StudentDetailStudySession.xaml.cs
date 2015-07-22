@@ -1,5 +1,6 @@
 ﻿using App1.Common;
 using App1.Model.Logic;
+using App1.Model.Transfer;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -77,13 +78,13 @@ namespace App1.Student
             {
                 defaultViewModel = new DetailStudentStudySessionViewModel(_session);
                 this.DataContext = defaultViewModel;
-                if (_session.ActiveTutor == null)
-                {
-                    if(_activeTutorStack != null)
-                    {
-                        _activeTutorStack.Visibility = Visibility.Collapsed;
-                    }
-                }
+                //if (_session.ActiveTutor == null)
+                //{
+                //    if(_activeTutorStack != null)
+                //    {
+                //        _activeTutorStack.Visibility = Visibility.Collapsed;
+                //    }
+                //}
             }
         }
 
@@ -137,9 +138,24 @@ namespace App1.Student
             Frame.Navigate(typeof(MainPage));
         }
 
-        private void prelimTutorAccept_Tapped(object sender, TappedRoutedEventArgs e)
+        private async void prelimTutorAccept_Tapped(object sender, TappedRoutedEventArgs e)
         {
             e.Handled = true;
+            if (_session.ActiveTutor == null)
+            {
+                Button button = sender as Button;
+                Border grid = (button.Parent as Grid).Parent as Border;
+                PreliminaryTutor tutor = (grid.DataContext as PrelimTutorVM).Tutor;
+
+                if(tutor != null)
+                {
+                    AcceptModel model = new AcceptModel(tutor.TutorId, _session.StudentId, _session.StudySessionId);
+                    await RequestHandler.Shared().putStudentAccept(model);
+                    defaultViewModel.ActiveTutor = tutor;
+                    defaultViewModel.PreliminaryTutors.RemoveAt(_session.PreliminaryTutors.IndexOf(tutor));
+                    _activeTutorStack.Visibility = Visibility.Visible;
+                }
+            }
         }
 
         private void ActiveTutorStackPanel_Loaded(object sender, RoutedEventArgs e)
@@ -176,7 +192,14 @@ namespace App1.Student
                 case "Delete":
                     await RequestHandler.Shared().deleteStudentStudySession(_session.StudySessionId);
                     DataManager.shared().myself.StudentStudySessions.Remove(_session);
-                    Frame.Navigate(typeof(StudySessionPage));
+                    if (Frame.CanGoBack)
+                    {
+                        Frame.GoBack();
+                    }
+                    else
+                    {
+                        Frame.Navigate(typeof(StudySessionPage));
+                    }
                     break;
                 case "Cancel":
                     break;           

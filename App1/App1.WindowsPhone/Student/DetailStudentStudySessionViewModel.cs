@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Xaml;
 
 namespace App1.Student
 {
@@ -14,6 +15,7 @@ namespace App1.Student
 
         private StudySession _session;
         private ObservableCollection<PrelimTutorVM> _prelimtutors;
+        private Visibility _activeTutorVisibility;
 
         public DetailStudentStudySessionViewModel(StudySession session)
         {
@@ -23,11 +25,41 @@ namespace App1.Student
             {
                 _prelimtutors.Add(new PrelimTutorVM(t));
             }
+            if (_session.ActiveTutor == null)
+                _activeTutorVisibility = Visibility.Collapsed;
+            else
+                _activeTutorVisibility = Visibility.Visible;
         }
 
         public String SubjectName
         {
             get { return _session.SubjectName; }
+        }
+
+        public PreliminaryTutor ActiveTutor
+        {
+            get { return _session.ActiveTutor; }
+            set
+            {
+                _session.ActiveTutor = value;
+                ActiveTutorVisibility = Visibility.Visible;
+                NotifyPropertyChanged("ActiveTutor");
+                NotifyPropertyChanged("ActiveTutorName");
+                NotifyPropertyChanged("DisplayActiveTutorFee");
+            }
+        }
+
+        public Visibility ActiveTutorVisibility
+        {
+            get
+            {
+                return _activeTutorVisibility;
+            }
+            set
+            {
+                _activeTutorVisibility = value;
+                NotifyPropertyChanged("ActiveTutorVisibility");
+            }
         }
         
         public String CourseName
@@ -87,6 +119,11 @@ namespace App1.Student
         public String DisplayTutorFee
         {
             get { return _tutor.SessionFee.ToString("C", new CultureInfo("en-us")); }
+        }
+
+        public PreliminaryTutor Tutor
+        {
+            get { return _tutor; }
         }
     }
 }
