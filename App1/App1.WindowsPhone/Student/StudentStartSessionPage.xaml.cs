@@ -1,6 +1,4 @@
 ﻿using App1.Common;
-using App1.Model.Logic;
-using App1.Model.Transfer;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,7 +7,6 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Graphics.Display;
-using Windows.UI.Popups;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -26,14 +23,12 @@ namespace App1.Student
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class StudentDetailStudySession : Page
+    public sealed partial class StudentStartSessionPage : Page
     {
-        private StudySession _session;
         private NavigationHelper navigationHelper;
-        private StackPanel _activeTutorStack;
-        private DetailStudentStudySessionViewModel defaultViewModel;
+        private ObservableDictionary defaultViewModel = new ObservableDictionary();
 
-        public StudentDetailStudySession()
+        public StudentStartSessionPage()
         {
             this.InitializeComponent();
 
@@ -54,7 +49,7 @@ namespace App1.Student
         /// Gets the view model for this <see cref="Page"/>.
         /// This can be changed to a strongly typed view model.
         /// </summary>
-        public DetailStudentStudySessionViewModel DefaultViewModel
+        public ObservableDictionary DefaultViewModel
         {
             get { return this.defaultViewModel; }
         }
@@ -72,20 +67,6 @@ namespace App1.Student
         /// session.  The state will be null the first time a page is visited.</param>
         private void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            int sessionid = (int)e.NavigationParameter;
-            _session = DataManager.shared().getStudySessionFromId(sessionid);
-            if (_session != null)
-            {
-                defaultViewModel = new DetailStudentStudySessionViewModel(_session);
-                this.DataContext = defaultViewModel;
-                //if (_session.ActiveTutor == null)
-                //{
-                //    if(_activeTutorStack != null)
-                //    {
-                //        _activeTutorStack.Visibility = Visibility.Collapsed;
-                //    }
-                //}
-            }
         }
 
         /// <summary>
@@ -126,84 +107,5 @@ namespace App1.Student
         }
 
         #endregion
-
-        private void Grid_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            Frame.Navigate(typeof(StudentCreateStudySessionPage));
-        }
-
-        private void activeTutorAccept_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            e.Handled = true;
-            Frame.Navigate(typeof(StudentStartSessionPage));
-        }
-
-        private async void prelimTutorAccept_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            e.Handled = true;
-            if (_session.ActiveTutor == null)
-            {
-                Button button = sender as Button;
-                Border grid = (button.Parent as Grid).Parent as Border;
-                PreliminaryTutor tutor = (grid.DataContext as PrelimTutorVM).Tutor;
-
-                if(tutor != null)
-                {
-                    AcceptModel model = new AcceptModel(tutor.TutorId, _session.StudentId, _session.StudySessionId);
-                    await RequestHandler.Shared().putStudentAccept(model);
-                    defaultViewModel.ActiveTutor = tutor;
-                    defaultViewModel.PreliminaryTutors.RemoveAt(_session.PreliminaryTutors.IndexOf(tutor));
-                    _activeTutorStack.Visibility = Visibility.Visible;
-                }
-            }
-        }
-
-        private void ActiveTutorStackPanel_Loaded(object sender, RoutedEventArgs e)
-        {
-            _activeTutorStack = sender as StackPanel;
-            if(_session != null && _session.ActiveTutor == null)
-            {
-                _activeTutorStack.Visibility = Visibility.Collapsed;
-            }
-        }
-
-        private void FindTutorButton_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-           Frame.Navigate(typeof(StudentNotifyTutorPage), _session.StudySessionId);
-        }
-
-        private async void DeleteSessionButton_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            var dialog = new MessageDialog("Are you sure you want to delete the session?", "Confirmation");
-            dialog.Commands.Add(new UICommand("Delete", new UICommandInvokedHandler(CommandHandler)));
-            dialog.Commands.Add(new UICommand("Cancel", new UICommandInvokedHandler(CommandHandler)));
-            dialog.DefaultCommandIndex = 0;
-            dialog.CancelCommandIndex = 1;
-
-            await dialog.ShowAsync();
-        }
-
-        private async void CommandHandler(IUICommand command)
-        {
-            var label = command.Label;
-
-            switch (label)
-            {
-                case "Delete":
-                    await RequestHandler.Shared().deleteStudentStudySession(_session.StudySessionId);
-                    DataManager.shared().myself.StudentStudySessions.Remove(_session);
-                    if (Frame.CanGoBack)
-                    {
-                        Frame.GoBack();
-                    }
-                    else
-                    {
-                        Frame.Navigate(typeof(StudySessionPage));
-                    }
-                    break;
-                case "Cancel":
-                    break;           
-            }
-        }
     }
 }
