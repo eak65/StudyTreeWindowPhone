@@ -5,6 +5,7 @@
     xmlns:local="using:App1.Student"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Mode=Self}}"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -26,10 +27,25 @@
             <TextBlock Text="StudyTree: Branch Out!" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,12,0,0"/>
             <TextBlock Text="Start Session" Margin="0,-6.5,0,26.5" Style="{ThemeResource HeaderTextBlockStyle}" CharacterSpacing="{ThemeResource PivotHeaderItemCharacterSpacing}"/>
         </StackPanel>
+        <StackPanel x:Name="ContentRoot" Margin="19,9.5,19,-12" Grid.Row="1" >
+            <TextBlock x:Name="TimeRemainingTextBlock" TextWrapping="Wrap" Text="{Binding CurrentTime}" Height="145" Margin="0,0,-0.333,0" Style="{StaticResource ListViewItemTextBlockStyle}" TextAlignment="Center" FontSize="40" FontFamily="Arial">56m25s</TextBlock>
+            <TextBlock x:Name="MinCostTextBlock" TextWrapping="Wrap" Text="{Binding MinCost}" Margin="6,0,-0.333,6" Style="{StaticResource TitleTextBlockStyle}" Height="32">Min Cost: 10</TextBlock>
+            <TextBlock Text="{Binding IncreaseCost}" x:Name="IncreaseCostTextBlock" TextWrapping="Wrap" Style="{StaticResource TitleTextBlockStyle}" Margin="6,0,-0.333,6" Height="32">
+            	<Run Text="Increase Cost: 0.00"/>
+            	<LineBreak/>
+            	<Run/>
+            </TextBlock>
+            <TextBlock Text="{Binding IncreaseTime}" x:Name="IncreaseTimeTextBlock" TextWrapping="Wrap" Style="{StaticResource TitleTextBlockStyle}" Margin="6,0,0,0" Height="32">
+                Increase Time
+            </TextBlock>
+            <StackPanel Height="60" Orientation="Horizontal" Margin="0,16,0,0">
+                <Button x:Name="DecreaseTimeButton" Content="-" HorizontalAlignment="Center" VerticalAlignment="Stretch" Margin="64,0,6,0" Background="#FF8E44AD" BorderThickness="0" Click="DecreaseTimeButton_Click"/>
+                <Button x:Name="IncreaseTimeButton" Content="+" HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="#FF8E44AD" BorderThickness="0" Margin="6,0,0,0" Click="IncreaseTimeButton_Click"/>
+            </StackPanel>
+            <Button x:Name="SubmitUpdateTimeButton" Content="Update Time" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#FF27AE60" Height="70" BorderThickness="0" Click="SubmitUpdateTimeButton_Click"/>
+            <Button x:Name="StartSessionButton" Content="Start" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#FF27AE60" Margin="0" Height="70" BorderThickness="0" Click="StartSessionButton_Click"/>
+        </StackPanel>
 
         <!--TODO: Content should be placed within the following grid-->
-        <Grid Grid.Row="1" x:Name="ContentRoot" Margin="19,9.5,19,0">
-
-        </Grid>
     </Grid>
 </Page>

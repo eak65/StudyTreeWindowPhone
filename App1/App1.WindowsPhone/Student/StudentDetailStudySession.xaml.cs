@@ -135,7 +135,7 @@ namespace App1.Student
         private void activeTutorAccept_Tapped(object sender, TappedRoutedEventArgs e)
         {
             e.Handled = true;
-            Frame.Navigate(typeof(StudentStartSessionPage));
+            Frame.Navigate(typeof(StudentStartSessionPage), _session.StudySessionId);
         }
 
         private async void prelimTutorAccept_Tapped(object sender, TappedRoutedEventArgs e)

@@ -59,7 +59,7 @@
                                     <Grid IsHitTestVisible="True" Tapped="Grid_Tapped">
                                         <TextBlock x:Name="ActiveTutorNameTextBlock" TextWrapping="Wrap" Text="{Binding ActiveTutorName}" Margin="16,16,0,0" Style="{StaticResource ListViewItemContentTextBlockStyle}" FontSize="18.667" VerticalAlignment="Top" Foreground="Black" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin"/>
                                         <TextBlock x:Name="ActiveTutorFeeTextBlock" TextWrapping="Wrap" Text="{Binding DisplayActiveTutorFee}" Style="{StaticResource ListViewItemContentTextBlockStyle}" FontSize="10.667" Margin="16,0,0,24" VerticalAlignment="Bottom" Foreground="Black" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin"/>
-                                        <Button IsHitTestVisible="True" Tapped="activeTutorAccept_Tapped" x:Name="button" Content="Accept" HorizontalAlignment="Right" Margin="0,43,21,0" VerticalAlignment="Stretch" Background="#FF1ABC9C" BorderThickness="0" d:LayoutOverrides="Height, LeftMargin, RightMargin"/>
+                                        <Button IsHitTestVisible="True" Tapped="activeTutorAccept_Tapped" x:Name="button" Content="Start" HorizontalAlignment="Right" Margin="0,43,21,0" VerticalAlignment="Stretch" Background="#FF1ABC9C" BorderThickness="0" d:LayoutOverrides="Height, LeftMargin, RightMargin"/>
                                     </Grid>
                                 </Border>
                             </StackPanel>

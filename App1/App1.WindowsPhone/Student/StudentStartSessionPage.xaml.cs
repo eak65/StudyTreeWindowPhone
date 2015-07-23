@@ -1,4 +1,5 @@
 ﻿using App1.Common;
+using App1.Student.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -26,7 +27,8 @@ namespace App1.Student
     public sealed partial class StudentStartSessionPage : Page
     {
         private NavigationHelper navigationHelper;
-        private ObservableDictionary defaultViewModel = new ObservableDictionary();
+        private StudentStartViewModel defaultViewModel;
+        private int _sessionId;
 
         public StudentStartSessionPage()
         {
@@ -49,7 +51,7 @@ namespace App1.Student
         /// Gets the view model for this <see cref="Page"/>.
         /// This can be changed to a strongly typed view model.
         /// </summary>
-        public ObservableDictionary DefaultViewModel
+        public StudentStartViewModel DefaultViewModel
         {
             get { return this.defaultViewModel; }
         }
@@ -99,6 +101,12 @@ namespace App1.Student
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedTo(e);
+            if(e.NavigationMode == NavigationMode.New)
+            {
+                _sessionId = (int)e.Parameter;
+                defaultViewModel = new StudentStartViewModel(DataManager.shared().getStudySessionFromId(_sessionId));
+                this.DataContext = defaultViewModel;
+            }
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -107,5 +115,32 @@ namespace App1.Student
         }
 
         #endregion
+
+        private void StartSessionButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SubmitUpdateTimeButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void DecreaseTimeButton_Click(object sender, RoutedEventArgs e)
+        {
+            if(defaultViewModel.IncreaseSeconds > 600)
+            {
+                defaultViewModel.IncreaseSeconds -= 10 * 60;
+            }
+            else if(defaultViewModel.IncreaseSeconds > 0)
+            {
+                defaultViewModel.IncreaseSeconds = 0;
+            }
+        }
+
+        private void IncreaseTimeButton_Click(object sender, RoutedEventArgs e)
+        {
+            defaultViewModel.IncreaseSeconds += 10 * 60;
+        }
     }
 }
