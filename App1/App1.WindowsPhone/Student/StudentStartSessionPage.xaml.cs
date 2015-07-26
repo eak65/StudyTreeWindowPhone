@@ -1,10 +1,12 @@
 ﻿using App1.Common;
+using App1.Model.Transfer;
 using App1.Student.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Graphics.Display;
@@ -29,6 +31,8 @@ namespace App1.Student
         private NavigationHelper navigationHelper;
         private StudentStartViewModel defaultViewModel;
         private int _sessionId;
+        private DispatcherTimer _timer;
+        private Boolean _hasStarted = false;
 
         public StudentStartSessionPage()
         {
@@ -106,6 +110,21 @@ namespace App1.Student
                 _sessionId = (int)e.Parameter;
                 defaultViewModel = new StudentStartViewModel(DataManager.shared().getStudySessionFromId(_sessionId));
                 this.DataContext = defaultViewModel;
+                _timer = new DispatcherTimer();
+                _timer.Tick += _timer_Tick;
+                _timer.Interval = new TimeSpan(0, 0, 1);
+            }
+        }
+
+        private void _timer_Tick(object sender, object e)
+        {
+            if (defaultViewModel.Seconds > 0)
+            {
+                defaultViewModel.Seconds -= 1;
+            }
+            else
+            {
+                _timer.Stop();
             }
         }
 
@@ -118,12 +137,25 @@ namespace App1.Student
 
         private void StartSessionButton_Click(object sender, RoutedEventArgs e)
         {
-
+            if (!_hasStarted)
+            {
+                _timer.Start();
+                Button b = sender as Button;
+                b.Content = "Stop";
+                _hasStarted = true;
+            }
+            else
+            {
+                _timer.Stop();
+            }
         }
 
-        private void SubmitUpdateTimeButton_Click(object sender, RoutedEventArgs e)
+        private async void SubmitUpdateTimeButton_Click(object sender, RoutedEventArgs e)
         {
-
+            TimerModel model = new TimerModel(defaultViewModel.IncreaseSeconds, _sessionId, defaultViewModel.Session.StudentId);
+            await RequestHandler.Shared().putStudentUpdateTimer(model);
+            defaultViewModel.Seconds += defaultViewModel.IncreaseSeconds;
+            defaultViewModel.IncreaseSeconds = 0;
         }
 
         private void DecreaseTimeButton_Click(object sender, RoutedEventArgs e)
