@@ -73,9 +73,15 @@
     <Compile Include="$(MSBuildThisFileDirectory)SignalR\SignalR.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)Assets\cap.PNG" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\createsession.PNG" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\DarkGray.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\findtutor.PNG" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\LightGray.png" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\MediumGray.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\notification.PNG" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\studysession.PNG" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\tutorprofile.PNG" />
     <Content Include="$(MSBuildThisFileDirectory)DataModel\SampleData.json" />
   </ItemGroup>
   <ItemGroup>

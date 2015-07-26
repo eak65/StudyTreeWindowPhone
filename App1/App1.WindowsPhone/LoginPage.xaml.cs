@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -29,6 +30,8 @@ namespace App1
             this.InitializeComponent();
            
             this.NavigationCacheMode = NavigationCacheMode.Required;
+            this.Background = new SolidColorBrush(Color.FromArgb(255, 26, 188, 156));
+
         }
 
         /// <summary>

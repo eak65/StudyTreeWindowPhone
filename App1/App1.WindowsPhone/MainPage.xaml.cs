@@ -24,6 +24,7 @@ using App1.SignalR;
 using RestSharp.Portable;
 using App1.Model.Logic;
 using System.Threading.Tasks;
+using Windows.UI;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkID=390556
 
@@ -46,6 +47,8 @@ namespace App1
            this.navigationHelper = new NavigationHelper(this);
            this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
            this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
+           this.Background = new SolidColorBrush(Color.FromArgb(255, 26, 188, 156));
+
         }
 
         public async Task loadUniversity()
@@ -146,10 +149,11 @@ namespace App1
 
         }
 
-     
-
-
-
-  
+        private void logoutButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+            localSettings.Values.Remove("token");
+            Frame.Navigate(typeof(LoginPage));
+        }
     }
 }

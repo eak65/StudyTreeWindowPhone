@@ -121,7 +121,7 @@
         <HubSection Header="Setting" Width="Auto" >
             <DataTemplate>
                 <StackPanel>
-                    <Button Name="logoutButton" Content="Log Out" FontWeight="Bold" />
+                    <Button Name="logoutButton" Tapped="logoutButton_Tapped" Content="Log Out" FontWeight="Bold" />
                 </StackPanel>
             </DataTemplate>
         </HubSection>

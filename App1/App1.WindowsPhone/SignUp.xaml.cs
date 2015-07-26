@@ -21,6 +21,7 @@ using App1.Model.Logic;
 using App1.Model;
 using System.Threading.Tasks;
 using System.Net.Http;
+using Windows.UI;
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkID=390556
 
 namespace App1
@@ -40,6 +41,8 @@ namespace App1
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
+            this.Background = new SolidColorBrush(Color.FromArgb(255, 26, 188, 156));
+
         }
 
         /// <summary>
