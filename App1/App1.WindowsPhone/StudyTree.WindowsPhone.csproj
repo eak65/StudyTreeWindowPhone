@@ -129,6 +129,9 @@
     <Compile Include="TutorView\SelectedStudentSession.xaml.cs">
       <DependentUpon>SelectedStudentSession.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TutorView\TutorStudySessions.xaml.cs">
+      <DependentUpon>TutorStudySessions.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TutorView\ViewModels\SelectedStudentSessionViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -196,6 +199,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="TutorView\SelectedStudentSession.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TutorView\TutorStudySessions.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

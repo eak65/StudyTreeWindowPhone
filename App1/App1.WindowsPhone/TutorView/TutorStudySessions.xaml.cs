@@ -1,9 +1,12 @@
 ﻿using App1.Common;
+using App1.Model.Logic;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Graphics.Display;
@@ -25,9 +28,11 @@ namespace App1.TutorView
     /// </summary>
     public sealed partial class TutorStudySessions : Page
     {
+      
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
-
+        private ObservableCollection<StudySession> _studySessions = new ObservableCollection<StudySession>();
+        private ListView _sessionListView;
         public TutorStudySessions()
         {
             this.InitializeComponent();
@@ -35,6 +40,8 @@ namespace App1.TutorView
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
+            _sessionListView = this.sessionListView;
+            loadStudySessions();
         }
 
         /// <summary>
@@ -44,7 +51,19 @@ namespace App1.TutorView
         {
             get { return this.navigationHelper; }
         }
+        public void loadStudySessions()
+        {
+            ObservableCollection<StudySession> sessions = new ObservableCollection<StudySession>();
+            foreach (StudySession session in DataManager.shared().myself.TutorStudySessions)
+            {
+                if (session.TypeCode != 5)
+                {
+                    sessions.Add(session);
+                }
+            }
+            defaultViewModel.Add("StudySessions", sessions);
 
+        }
         /// <summary>
         /// Gets the view model for this <see cref="Page"/>.
         /// This can be changed to a strongly typed view model.
@@ -105,7 +124,13 @@ namespace App1.TutorView
         {
             this.navigationHelper.OnNavigatedFrom(e);
         }
+        private void StudySession_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            StudySession selectedSession = _sessionListView.SelectedItem as StudySession;
 
+            this.Frame.Navigate(typeof(SelectedStudentSession), selectedSession);
+
+        }
         #endregion
     }
 }

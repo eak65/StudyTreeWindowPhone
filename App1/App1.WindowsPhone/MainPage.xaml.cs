@@ -141,7 +141,7 @@ namespace App1
             }
             else if (itemId.Equals("2"))
             {
-                selectionPage = typeof(StudySessionPage);
+                selectionPage = typeof(TutorStudySessions);
 
             }
             else if (itemId.Equals("3"))
