@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace App1.Student.ViewModels
+namespace App1.StudentView.ViewModels
 {
     public class StudentStartViewModel : BaseINPC
     {

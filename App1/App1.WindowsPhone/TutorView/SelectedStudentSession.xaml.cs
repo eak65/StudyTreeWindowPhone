@@ -1,6 +1,8 @@
 ﻿using App1.Common;
-using App1.Facilator;
 using App1.Model.Logic;
+using App1.Model.Transfer;
+using App1.StudentView;
+using App1.TutorView.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,25 +22,25 @@ using Windows.UI.Xaml.Navigation;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkID=390556
 
-namespace App1.StudentView
+namespace App1.TutorView
 {
+
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class UniversityCourseListPage : Page
+    public sealed partial class SelectedStudentSession : Page
     {
         private NavigationHelper navigationHelper;
-        private UniversityCoursesListViewModel defaultViewModel = new UniversityCoursesListViewModel(DataManager.shared().University);
-        private Course _changeCourse;
+        private StudySession _session;
+        private SelectedStudentSessionViewModel defaultViewModel;
 
-        public UniversityCourseListPage()
+        public SelectedStudentSession()
         {
             this.InitializeComponent();
 
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
-            this.DataContext = defaultViewModel;
         }
 
         /// <summary>
@@ -53,7 +55,7 @@ namespace App1.StudentView
         /// Gets the view model for this <see cref="Page"/>.
         /// This can be changed to a strongly typed view model.
         /// </summary>
-        public UniversityCoursesListViewModel DefaultViewModel
+        public DetailStudentStudySessionViewModel DefaultViewModel
         {
             get { return this.defaultViewModel; }
         }
@@ -71,8 +73,21 @@ namespace App1.StudentView
         /// session.  The state will be null the first time a page is visited.</param>
         private void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
+            StudySession session = (StudySession)e.NavigationParameter;
+            _session = session;
+            if (_session != null)
+            {
+                defaultViewModel = new SelectedStudentSessionViewModel(_session);
+                this.DataContext = defaultViewModel;
+                //if (_session.ActiveTutor == null)
+                //{
+                //    if(_activeTutorStack != null)
+                //    {
+                //        _activeTutorStack.Visibility = Visibility.Collapsed;
+                //    }
+                //}
+            }
         }
-
         /// <summary>
         /// Preserves state associated with this page in case the application is suspended or the
         /// page is discarded from the navigation cache.  Values must conform to the serialization
@@ -112,31 +127,16 @@ namespace App1.StudentView
 
         #endregion
 
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void TextBlock_SelectionChanged(object sender, RoutedEventArgs e)
         {
-            TextBox queryBox = sender as TextBox;
-            defaultViewModel.SearchPhrase = queryBox.Text;
+
         }
 
-        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void request_Click(object sender, RoutedEventArgs e)
         {
-            ListView lv = sender as ListView;
-            Course c = lv.SelectedItem as Course;
 
-            if(c!= null)
-            {
-                if (_changeCourse == null)
-                {
-                    _changeCourse = c;
-                    UniversityClassFacilator.Shared.SelectedCourse = c;
-                    Frame.GoBack();
-                }
-                else if (_changeCourse.Title != c.Title)
-                {
-                    UniversityClassFacilator.Shared.SelectedCourse = c;
-                    Frame.GoBack();
-                }               
-            } 
+           await RequestHandler.Shared().postTutorToSession(new TutorSessionModel(_session.StudySessionId));
+            Frame.GoBack();
         }
     }
 }

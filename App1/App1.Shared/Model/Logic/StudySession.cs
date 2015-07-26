@@ -54,7 +54,7 @@ namespace App1.Model.Logic
         public Boolean StudentRank;
         public Boolean TutorRank;
         public ObservableCollection<PreliminaryTutor> PreliminaryTutors { get; set; }
-        public Student Student;
+        public Student Student { get; set; }
         public String FormattedAddress;
         public int TypeCode;
         public int TimeRequested;

@@ -41,11 +41,17 @@ namespace App1
 
         }
         public StudySession getStudySessionFromId(int id)
-    {
-        IList<StudySession> joined = this.myself.StudentStudySessions;
-          
-        var j= joined.Concat(this.myself.TutorStudySessions);
-        return j.FirstOrDefault(s => s.StudySessionId == id);
+       {
+     
+            StudySession session = null;  
+            session = this.myself.TutorStudySessions.FirstOrDefault(s => s.StudySessionId == id);
+
+            if (session ==null)
+            {
+                session = this.myself.StudentStudySessions.FirstOrDefault(s => s.StudySessionId == id);
+            }
+            return session;
+           
         }
    
          public void DidLogin()

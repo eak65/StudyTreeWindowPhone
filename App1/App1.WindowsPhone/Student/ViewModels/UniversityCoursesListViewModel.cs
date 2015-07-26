@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace App1.Student
+namespace App1.StudentView
 {
     public class UniversityCoursesListViewModel : BaseINPC
     {

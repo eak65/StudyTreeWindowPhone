@@ -123,6 +123,13 @@
     </Compile>
     <Compile Include="Student\ViewModels\StudentStartViewModel.cs" />
     <Compile Include="Student\ViewModels\UniversityCoursesListViewModel.cs" />
+    <Compile Include="TutorView\FindStudySession.xaml.cs">
+      <DependentUpon>FindStudySession.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TutorView\SelectedStudentSession.xaml.cs">
+      <DependentUpon>SelectedStudentSession.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TutorView\ViewModels\SelectedStudentSessionViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -184,6 +191,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="TutorView\FindStudySession.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TutorView\SelectedStudentSession.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="crypto">
@@ -233,9 +248,7 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Tutor\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>
   </PropertyGroup>

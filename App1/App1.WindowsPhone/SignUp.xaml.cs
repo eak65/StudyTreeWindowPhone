@@ -138,7 +138,7 @@ namespace App1
             CreatePerson person = new CreatePerson();
             person.FirstName = this.firstNameText.Text;
             person.LastName = this.lastNameText.Text;
-            person.Location = "POINT(0 0)";
+            person.Location = "POINT(-75.1667 39.9500)";
             person.Major = this.majorText.Text;
             person.UserName = this.userNameText.Text;
             person.Password = this.passwordText.Password;

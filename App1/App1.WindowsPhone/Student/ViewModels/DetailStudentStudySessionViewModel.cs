@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 
-namespace App1.Student
+namespace App1.StudentView
 {
     public class DetailStudentStudySessionViewModel : BaseINPC
     {

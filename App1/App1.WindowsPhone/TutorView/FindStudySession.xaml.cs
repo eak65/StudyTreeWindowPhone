@@ -1,11 +1,10 @@
 ﻿using App1.Common;
-using App1.Facilator;
-using App1.Model.Logic;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Graphics.Display;
@@ -15,30 +14,34 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
+using System.Collections.ObjectModel;
+
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using App1.Model.Logic;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkID=390556
 
-namespace App1.StudentView
+namespace App1.TutorView
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class UniversityCourseListPage : Page
+    public sealed partial class FindStudySession : Page
     {
         private NavigationHelper navigationHelper;
-        private UniversityCoursesListViewModel defaultViewModel = new UniversityCoursesListViewModel(DataManager.shared().University);
-        private Course _changeCourse;
-
-        public UniversityCourseListPage()
+        private ObservableDictionary defaultViewModel = new ObservableDictionary();
+        private ObservableCollection<StudySession> _studySessions = new ObservableCollection<StudySession>();
+        private ListView _localsessionListView;
+        public FindStudySession()
         {
             this.InitializeComponent();
 
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
-            this.DataContext = defaultViewModel;
+            _localsessionListView = sessionListView;
+            Task.Run(() => this.loadInformation());
         }
 
         /// <summary>
@@ -53,11 +56,23 @@ namespace App1.StudentView
         /// Gets the view model for this <see cref="Page"/>.
         /// This can be changed to a strongly typed view model.
         /// </summary>
-        public UniversityCoursesListViewModel DefaultViewModel
+        public ObservableDictionary DefaultViewModel
         {
             get { return this.defaultViewModel; }
         }
-
+        public async Task loadInformation()
+        {
+         var response=  await RequestHandler.Shared().getStudySessionsAroundMe("POINT(-75.1667 39.9500)","5000");
+         
+            _studySessions.Clear();
+            foreach(StudySession session in  (IList<StudySession>) response.Response)
+            {
+               
+                _studySessions.Add(session);
+            }
+          
+            defaultViewModel.Add("StudySessions", _studySessions);
+        }
         /// <summary>
         /// Populates the page with content passed during navigation.  Any saved state is also
         /// provided when recreating a page from a prior session.
@@ -112,31 +127,22 @@ namespace App1.StudentView
 
         #endregion
 
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void sessionListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            TextBox queryBox = sender as TextBox;
-            defaultViewModel.SearchPhrase = queryBox.Text;
+
         }
 
-        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void TextBlock_SelectionChanged(object sender, RoutedEventArgs e)
         {
-            ListView lv = sender as ListView;
-            Course c = lv.SelectedItem as Course;
 
-            if(c!= null)
-            {
-                if (_changeCourse == null)
-                {
-                    _changeCourse = c;
-                    UniversityClassFacilator.Shared.SelectedCourse = c;
-                    Frame.GoBack();
-                }
-                else if (_changeCourse.Title != c.Title)
-                {
-                    UniversityClassFacilator.Shared.SelectedCourse = c;
-                    Frame.GoBack();
-                }               
-            } 
+        }
+
+        private void StudySession_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            StudySession selectedSession = _localsessionListView.SelectedItem as StudySession;
+
+            this.Frame.Navigate(typeof(SelectedStudentSession), selectedSession);
+
         }
     }
 }

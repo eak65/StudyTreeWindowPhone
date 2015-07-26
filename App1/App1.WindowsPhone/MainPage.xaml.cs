@@ -1,27 +1,15 @@
 ﻿using App1.Common;
 using App1.Model;
-using App1.Student;
+using App1.StudentView;
 using HubApp1.Data;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.Graphics.Display;
-using Windows.UI.ViewManagement;
-using Windows.UI.Xaml;
+
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
+
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using App1.Model.Transfer;
-using App1.SignalR;
-using RestSharp.Portable;
+using App1.TutorView;
 using App1.Model.Logic;
 using System.Threading.Tasks;
 using Windows.UI;
@@ -145,7 +133,23 @@ namespace App1
 
         private void TeachSection_ItemClick(object sender, ItemClickEventArgs e)
         {
+            Type selectionPage = null;
             var itemId = ((SampleDataItem)e.ClickedItem).UniqueId;
+            if (itemId.Equals("1"))
+            {
+                selectionPage = typeof(StudentProfilePage);
+            }
+            else if (itemId.Equals("2"))
+            {
+                selectionPage = typeof(StudySessionPage);
+
+            }
+            else if (itemId.Equals("3"))
+            {
+                selectionPage = typeof(FindStudySession);
+
+            }
+            Frame.Navigate(selectionPage, itemId);
 
         }
 

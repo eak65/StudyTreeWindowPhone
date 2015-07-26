@@ -1,6 +1,6 @@
 ﻿using App1.Common;
 using App1.Model.Transfer;
-using App1.Student.ViewModels;
+using App1.StudentView.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -21,7 +21,7 @@ using Windows.UI.Xaml.Navigation;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkID=390556
 
-namespace App1.Student
+namespace App1.StudentView
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
