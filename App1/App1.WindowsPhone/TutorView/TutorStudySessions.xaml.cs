@@ -128,7 +128,7 @@ namespace App1.TutorView
         {
             StudySession selectedSession = _sessionListView.SelectedItem as StudySession;
 
-            this.Frame.Navigate(typeof(SelectedStudentSession), selectedSession);
+   //         this.Frame.Navigate(typeof(SelectedStudentSession), selectedSession);
 
         }
         #endregion
