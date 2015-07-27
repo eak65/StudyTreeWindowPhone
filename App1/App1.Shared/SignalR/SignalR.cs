@@ -37,12 +37,15 @@ namespace App1.SignalR
         }
 
         public async Task Start()
-       {
-           _proxy.Subscribe("updateConnectionString").Received += updateConnection;
-           _proxy.Subscribe("updateChat").Received += updateChat;
+        {
+            if (!(_connection.State == ConnectionState.Connected||_connection.State == ConnectionState.Connecting))
+            {
+                _proxy.Subscribe("updateConnectionString").Received += updateConnection;
+                _proxy.Subscribe("updateChat").Received += updateChat;
 
-            _connection.Start(new LongPollingTransport());    
-       }
+               await _connection.Start(new LongPollingTransport());
+            }
+        }
 
        void updateConnection(IList<Newtonsoft.Json.Linq.JToken> obj)
        {

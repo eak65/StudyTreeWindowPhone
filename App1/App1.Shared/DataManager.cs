@@ -34,7 +34,7 @@ namespace App1
       
         public void update(UpdateModel updateModel)
         {
-
+        
            shared().myself.studentSponserTokenId = updateModel.StudentTokenId;
            shared().myself.StudentStudySessions = updateModel.Student.StudySessions;
            shared().myself.TutorStudySessions = updateModel.Tutor.StudySessions;
@@ -75,14 +75,13 @@ namespace App1
            
         }
    
-         public void DidLogin()
+         public async void DidLogin()
         {
-            SignalR.SignalR signalR = new SignalR.SignalR(Constants.url);
-            Task.Run(() => signalR.Start());
-
             RequestHandler handler = new RequestHandler();
             handler.updateInformation();
-            handler.putLoginInformation(new LoginModel("POINT(39.9540 -75.1880)"));
+            await handler.putLoginInformation(new LoginModel("POINT(-75.1880 39.9540)"));
+            SignalR.SignalR signalR = new SignalR.SignalR(Constants.url);
+            signalR.Start();
         }
     }
  }
