@@ -134,6 +134,7 @@ namespace App1.StudentView
             Dictionary<String, int> param = new Dictionary<string, int>();
             param.Add("SessionId", _session.StudySessionId);
             param.Add("TutorId", t.Tutor.TutorId);
+            param.Add("isTutorChat", 0);
             Frame.Navigate(typeof(ChatPage), param);
         }
 

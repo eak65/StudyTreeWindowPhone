@@ -748,10 +748,11 @@ namespace App1
                             localSettings.Values["token"] = responseBodyAsText;
                         }
                             DataManager.shared().token = responseBodyAsText;
-                        DataReceivedHandler(response, null);
                     }
-                }
+                DataReceivedHandler(response, null);
+
             }
+        }
 
         }
 

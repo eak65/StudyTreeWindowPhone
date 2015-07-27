@@ -1,5 +1,6 @@
 ﻿using App1.Common;
 using App1.Model.Logic;
+using App1.StudentView;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -127,8 +128,12 @@ namespace App1.TutorView
         private void StudySession_Tapped(object sender, TappedRoutedEventArgs e)
         {
             StudySession selectedSession = _sessionListView.SelectedItem as StudySession;
-
-   //         this.Frame.Navigate(typeof(SelectedStudentSession), selectedSession);
+            Dictionary<String, int> param = new Dictionary<string, int>();
+            param.Add("SessionId", selectedSession.StudySessionId);
+            param.Add("TutorId", DataManager.shared().myself.PersonId);
+            param.Add("isTutorChat", 1);
+            var page = typeof(ChatPage);           
+            Frame.Navigate(page, param);
 
         }
         #endregion

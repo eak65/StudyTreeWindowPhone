@@ -31,17 +31,17 @@ namespace App1.StudentView
         private ObservableCollection<TreeMessage> _allMessages;
         private int _sessionId;
         private int _tutorId;
-
+        public bool isTutorChat;
         public ChatPage()
         {
             this.InitializeComponent();
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
-
+            isTutorChat = false; // Student chat by default
             Loaded += ChatPage_Loaded;
         }
-
+        
         private void ChatPage_Loaded(object sender, RoutedEventArgs e)
         {
             if (_allMessages.Count > 0)
@@ -72,6 +72,11 @@ namespace App1.StudentView
             {
                 _sessionId = param["SessionId"];
                 _tutorId = param["TutorId"];
+                int type = param["isTutorChat"];
+                if(type==1)
+                {
+                    this.isTutorChat = true;
+                }
                 PreliminaryTutor tutor = DataManager.shared().getTutor(_sessionId, _tutorId);
                 _allMessages = tutor.Messages;
                 myChat.ItemsSource = _allMessages;
@@ -87,7 +92,7 @@ namespace App1.StudentView
                 String message = ChatConversation.Text;
                 StudySession session = DataManager.shared().getStudySessionFromId(_sessionId);
                 TreeMessage sentMessage = new TreeMessage(_tutorId, _sessionId, message);
-                await RequestHandler.Shared().postStudentMessage(sentMessage);
+                this.sendMessage(sentMessage);
                 _allMessages.Add(sentMessage);
                 ChatConversation.Text = "";
             }
@@ -150,13 +155,24 @@ namespace App1.StudentView
             get { return this.navigationHelper; }
         }
 
+        private void sendMessage(TreeMessage message)
+        {
+            if (isTutorChat)
+            {
+                Task.Run(()=> RequestHandler.Shared().postTutorMessage(message));
+            }
+            else
+            {
+                Task.Run(() => RequestHandler.Shared().postStudentMessage(message));
 
+            }
+        }
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
             String message = ChatConversation.Text;
             StudySession session = DataManager.shared().getStudySessionFromId(_sessionId);
             TreeMessage sentMessage = new TreeMessage(_tutorId, _sessionId, message);
-            await RequestHandler.Shared().postStudentMessage(sentMessage);
+            this.sendMessage(sentMessage);
             _allMessages.Add(sentMessage);
             ChatConversation.Text = "";
         }

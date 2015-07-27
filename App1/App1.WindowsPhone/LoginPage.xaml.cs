@@ -74,6 +74,14 @@ namespace App1
             
                 Frame.Navigate(typeof(MainPage));
             }
+            else if(s.StatusCode == System.Net.HttpStatusCode.PaymentRequired) // sharewalling
+            {
+
+            }
+            else if(s.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+
+            }
             // this event trigger when your web request complete.
 
         }
