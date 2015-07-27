@@ -30,7 +30,6 @@ namespace App1
         {
            this.InitializeComponent();
            this.NavigationCacheMode = NavigationCacheMode.Required;
-            SignalR.SignalR signalR = new SignalR.SignalR(Constants.url);
 
            this.navigationHelper = new NavigationHelper(this);
            this.navigationHelper.LoadState += this.NavigationHelper_LoadState;

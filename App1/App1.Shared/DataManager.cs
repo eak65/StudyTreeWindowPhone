@@ -6,6 +6,7 @@ using App1.Handler;
 using App1.Model;
 using App1.Model.Logic;
 using App1.Model.Transfer;
+using System.Threading.Tasks;
 
 namespace App1
 {
@@ -23,6 +24,8 @@ namespace App1
          if(dataManager==null)
          {
              dataManager = new DataManager();
+             dataManager.studentMessageHandler = new StudentMessageHandler();
+             dataManager.tutorMessageHandler = new TutorMessageHandler();
              dataManager.myself=new User();
          }
          return dataManager;
@@ -75,6 +78,8 @@ namespace App1
          public void DidLogin()
         {
             SignalR.SignalR signalR = new SignalR.SignalR(Constants.url);
+            Task.Run(() => signalR.Start());
+
             RequestHandler handler = new RequestHandler();
             handler.updateInformation();
             handler.putLoginInformation(new LoginModel("POINT(39.9540 -75.1880)"));

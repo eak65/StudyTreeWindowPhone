@@ -19,7 +19,7 @@ namespace App1.SignalR
        {
            _connection = new HubConnection(url);
            _proxy = _connection.CreateHubProxy("chatHub");
-           Start();
+          
        }
 
        public async Task Start()
@@ -32,14 +32,14 @@ namespace App1.SignalR
 
        void updateConnection(IList<Newtonsoft.Json.Linq.JToken> obj)
        {
-           int personId = 2052;
+            int personId = DataManager.shared().myself.PersonId;
            _proxy.Invoke("updateConnection",personId);
        }
        void updateChat(IList<Newtonsoft.Json.Linq.JToken> obj)
        {
          TreeMessage message=obj[0].ToObject<TreeMessage>();
-
-           if(!(message.SenderId==DataManager.shared().myself.PersonId))
+            int myId = DataManager.shared().myself.PersonId;
+           if (!(message.SenderId==myId))
              {
                if(message.PreliminaryTutorId==DataManager.shared().myself.PersonId)
                    {
