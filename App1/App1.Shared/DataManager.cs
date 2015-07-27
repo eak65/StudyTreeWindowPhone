@@ -40,6 +40,24 @@ namespace App1
            shared().myself.TutorStudySessions = updateModel.Tutor.StudySessions;
 
         }
+        public PreliminaryTutor getTutor(int sessionId, int tutorId)
+        {
+          StudySession session =  DataManager.shared().myself.StudentStudySessions.Where(s => s.StudySessionId == sessionId).FirstOrDefault();
+
+            if(session.TypeCode>1)
+            {
+                if (session.ActiveTutor.TutorId == tutorId)
+                {
+                    return session.ActiveTutor;
+                }
+                else
+                {
+                    return null;
+                }
+
+            }
+            return session.PreliminaryTutors.Where(t => t.TutorId == tutorId).FirstOrDefault();
+        }
         public StudySession getStudySessionFromId(int id)
        {
      
