@@ -20,8 +20,7 @@
             </Border>
         </DataTemplate>
     </Page.Resources>
-
-    <Hub DataContext="{Binding}" Header="StudyTree : Branch Out!" x:Name="StudentDetailHub">
+        <Hub DataContext="{Binding}" Header="StudyTree : Branch Out!" x:Name="StudentDetailHub">
         <HubSection DataContext="{Binding}" x:Name="InformationHub" x:Uid="InformationHub" Header="Information" Width="Auto">
             <DataTemplate x:Name="InformationTemplate">
                 <Grid x:Name="LayoutRoot">

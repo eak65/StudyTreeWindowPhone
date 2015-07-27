@@ -81,6 +81,10 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Student\ChatBubbleSelector.cs" />
+    <Compile Include="Student\ChatPage.xaml.cs">
+      <DependentUpon>ChatPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Student\StudentStartSessionPage.xaml.cs">
       <DependentUpon>StudentStartSessionPage.xaml</DependentUpon>
     </Compile>
@@ -150,6 +154,10 @@
     <Content Include="RestSharp.Portable.rd.xml" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Student\ChatPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Student\StudentCreateStudySessionPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

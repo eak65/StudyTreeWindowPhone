@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Graphics.Display;
@@ -113,6 +114,8 @@ namespace App1.StudentView
                 _timer = new DispatcherTimer();
                 _timer.Tick += _timer_Tick;
                 _timer.Interval = new TimeSpan(0, 0, 1);
+                Task.Run(() => CallStartTime(_sessionId));
+                _timer.Start();
             }
         }
 
@@ -128,6 +131,13 @@ namespace App1.StudentView
             }
         }
 
+        private async Task CallStartTime(int id) {
+            StartModel model = new StartModel();
+            model.SessionId = _sessionId;
+            await RequestHandler.Shared().putStartTime(model);
+        }
+
+
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedFrom(e);
@@ -135,19 +145,12 @@ namespace App1.StudentView
 
         #endregion
 
-        private void StartSessionButton_Click(object sender, RoutedEventArgs e)
+        private async void StartSessionButton_Click(object sender, RoutedEventArgs e)
         {
-            if (!_hasStarted)
-            {
-                _timer.Start();
-                Button b = sender as Button;
-                b.Content = "Stop";
-                _hasStarted = true;
-            }
-            else
-            {
-                _timer.Stop();
-            }
+            EndSessionModel model = new EndSessionModel();
+            model.sessionId = _sessionId;
+            await RequestHandler.Shared().putStudentEndSession(model);
+            _timer.Stop();
         }
 
         private async void SubmitUpdateTimeButton_Click(object sender, RoutedEventArgs e)

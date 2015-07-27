@@ -43,7 +43,7 @@
                 <Button x:Name="IncreaseTimeButton" Content="+" HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="#FF8E44AD" BorderThickness="0" Margin="6,0,0,0" Click="IncreaseTimeButton_Click"/>
             </StackPanel>
             <Button x:Name="SubmitUpdateTimeButton" Content="Update Time" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#FF27AE60" Height="70" BorderThickness="0" Click="SubmitUpdateTimeButton_Click"/>
-            <Button x:Name="StartSessionButton" Content="Start" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#FF27AE60" Margin="0" Height="70" BorderThickness="0" Click="StartSessionButton_Click"/>
+            <Button x:Name="StartSessionButton" Content="End Session" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#FF27AE60" Margin="0" Height="70" BorderThickness="0" Click="StartSessionButton_Click"/>
         </StackPanel>
 
         <!--TODO: Content should be placed within the following grid-->

@@ -33,17 +33,19 @@ namespace App1.Model.Logic
             this.SenderId = DataManager.shared().myself.PersonId;
         }
 
-        public Boolean isIncoming()
+        public bool isIncoming
         {
-            if (this.SenderId == DataManager.shared().myself.PersonId)
+            get
             {
-                return false;
+                if (this.SenderId == DataManager.shared().myself.PersonId)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
             }
-            else
-            {
-                return true;
-            }
-
         }
     }
 }
