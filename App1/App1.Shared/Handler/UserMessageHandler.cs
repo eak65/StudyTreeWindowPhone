@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using App1.Model.Logic;
+using System.Threading.Tasks;
+using Windows.UI.Core;
+using Windows.ApplicationModel.Core;
 
 namespace App1.Handler
 {
@@ -25,8 +28,16 @@ namespace App1.Handler
             {
                 if(preliminaryTutor.TutorId == message.PreliminaryTutorId&&(preliminaryTutor.Messages.Last()==null||preliminaryTutor.Messages.Last().MessageId<message.MessageId))
                 {
-                    preliminaryTutor.Messages.Add(message);
-                    break;
+                        CoreDispatcher dispatcher = CoreApplication.MainView.CoreWindow.Dispatcher;
+                        if (!dispatcher.HasThreadAccess)
+                        {
+                            Task.Run(() => dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => { preliminaryTutor.Messages.Add(message); }));
+                        }
+                        else
+                        {
+                            preliminaryTutor.Messages.Add(message);
+                        }
+                        break;
                 }
             }
         }

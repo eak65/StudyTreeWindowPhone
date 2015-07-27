@@ -129,7 +129,12 @@ namespace App1.StudentView
 
         private void Grid_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            Frame.Navigate(typeof(StudentCreateStudySessionPage));
+            Border b = (sender as Grid).Parent as Border;
+            PrelimTutorVM t = b.DataContext as PrelimTutorVM;
+            Dictionary<String, int> param = new Dictionary<string, int>();
+            param.Add("SessionId", _session.StudySessionId);
+            param.Add("TutorId", t.Tutor.TutorId);
+            Frame.Navigate(typeof(ChatPage), param);
         }
 
         private void activeTutorAccept_Tapped(object sender, TappedRoutedEventArgs e)
