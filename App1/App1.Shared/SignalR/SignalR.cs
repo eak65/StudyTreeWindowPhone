@@ -8,6 +8,8 @@ using Windows.UI.Xaml.Controls;
 using App1.Handler;
 using App1.Model.Logic;
 using Microsoft.AspNet.SignalR.Client;
+using Microsoft.AspNet.SignalR.Client.Transports;
+using System.Diagnostics;
 
 namespace App1.SignalR
 {
@@ -18,16 +20,28 @@ namespace App1.SignalR
        public SignalR(string url)
        {
            _connection = new HubConnection(url);
-           _proxy = _connection.CreateHubProxy("chatHub");
-          
-       }
+      
+            // Add some tracing help
+            _connection.TraceLevel = TraceLevels.All;
+            _connection.Closed += () => Debug.WriteLine("[Closed]");
+            _connection.ConnectionSlow += () => Debug.WriteLine("[ConnectionSlow]");
+            _connection.Error += (error) => Debug.WriteLine("[Error] {0}", error.ToString());
+            _connection.Received += (payload) => Debug.WriteLine("[Received] {0}", payload);
+            _connection.Reconnected += () => Debug.WriteLine("[Reconnected]");
+            _connection.Reconnecting += () => Debug.WriteLine("[Reconnecting]");
+            _connection.StateChanged +=
+                (change) => Debug.WriteLine("[StateChanged] {0} {1}", change.OldState, change.NewState);
 
-       public async Task Start()
+            _proxy = _connection.CreateHubProxy("chatHub");
+
+        }
+
+        public async Task Start()
        {
            _proxy.Subscribe("updateConnectionString").Received += updateConnection;
            _proxy.Subscribe("updateChat").Received += updateChat;
 
-           await _connection.Start();    
+            _connection.Start(new LongPollingTransport());    
        }
 
        void updateConnection(IList<Newtonsoft.Json.Linq.JToken> obj)
