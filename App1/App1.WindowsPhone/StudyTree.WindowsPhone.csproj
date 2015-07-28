@@ -81,9 +81,13 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="MainPageViewModel.cs" />
     <Compile Include="Student\ChatBubbleSelector.cs" />
     <Compile Include="Student\ChatPage.xaml.cs">
       <DependentUpon>ChatPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Student\StudentReviewPage.xaml.cs">
+      <DependentUpon>StudentReviewPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Student\StudentStartSessionPage.xaml.cs">
       <DependentUpon>StudentStartSessionPage.xaml</DependentUpon>
@@ -125,6 +129,7 @@
     <Compile Include="Student\UniversityCourseListPage.xaml.cs">
       <DependentUpon>UniversityCourseListPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Student\ViewModels\StudentReviewViewModel.cs" />
     <Compile Include="Student\ViewModels\StudentStartViewModel.cs" />
     <Compile Include="Student\ViewModels\UniversityCoursesListViewModel.cs" />
     <Compile Include="TutorView\FindStudySession.xaml.cs">
@@ -171,6 +176,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Student\StudentNotifyTutorPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Student\StudentReviewPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

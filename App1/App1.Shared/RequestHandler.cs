@@ -195,22 +195,31 @@ namespace App1
             }
 
         public async Task<StResponse> putTutorReview(ReviewModel model)
+        {
+            try
             {
-                   var request = getRequest("/api/TutorSession/PutReview",HttpMethod.Put);
-               request.AddJsonBody(model);
-               IRestResponse response = await client.Execute(request);
-               if (response.IsSuccess)
-               {
-                   return ResponseFactory.createSuccessResponse();
-               }
-               else
-               {
-                   return ResponseFactory.createErrorResponse();
-               }
+                var request = getRequest("/api/TutorSession/PutReview", HttpMethod.Put);
+                request.AddJsonBody(model);
+                IRestResponse response = await client.Execute(request);
+                if (response.IsSuccess)
+                {
+                    return ResponseFactory.createSuccessResponse();
+                }
+                else
+                {
+                    return ResponseFactory.createErrorResponse();
+                }
             }
+            catch (HttpRequestException ex)
+            {
+                StResponse response = ResponseFactory.createErrorResponse();
+                response.ErrorDetails = ex.Message;
+                return response;
+            }
+        }
 
-       
-            public async Task<StResponse> deleteTutorSubject( String courseName)
+
+        public async Task<StResponse> deleteTutorSubject( String courseName)
             {
                 
                    var request = getRequest("/api/Subject/DeleteTutorCourse",HttpMethod.Delete);

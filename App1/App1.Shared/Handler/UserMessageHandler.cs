@@ -26,7 +26,7 @@ namespace App1.Handler
         {
             foreach(PreliminaryTutor preliminaryTutor in session.PreliminaryTutors)
             {
-                if(preliminaryTutor.TutorId == message.PreliminaryTutorId&&(preliminaryTutor.Messages.Last()==null||preliminaryTutor.Messages.Last().MessageId<message.MessageId))
+                if(preliminaryTutor.TutorId == message.PreliminaryTutorId&&(preliminaryTutor.Messages.Count == 0 ||  preliminaryTutor.Messages.Last()==null||preliminaryTutor.Messages.Last().MessageId<message.MessageId))
                 {
                         CoreDispatcher dispatcher = CoreApplication.MainView.CoreWindow.Dispatcher;
                         if (!dispatcher.HasThreadAccess)

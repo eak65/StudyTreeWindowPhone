@@ -6,8 +6,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
-using System.Threading;
-using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Graphics.Display;
@@ -27,21 +25,20 @@ namespace App1.StudentView
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class StudentStartSessionPage : Page
+    public sealed partial class StudentReviewPage : Page
     {
         private NavigationHelper navigationHelper;
-        private StudentStartViewModel defaultViewModel;
+        private StudentReviewViewModel defaultViewModel = new StudentReviewViewModel();
         private int _sessionId;
-        private DispatcherTimer _timer;
-        private Boolean _hasStarted = false;
 
-        public StudentStartSessionPage()
+        public StudentReviewPage()
         {
             this.InitializeComponent();
 
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
+            this.DataContext = defaultViewModel;
         }
 
         /// <summary>
@@ -56,7 +53,7 @@ namespace App1.StudentView
         /// Gets the view model for this <see cref="Page"/>.
         /// This can be changed to a strongly typed view model.
         /// </summary>
-        public StudentStartViewModel DefaultViewModel
+        public StudentReviewViewModel DefaultViewModel
         {
             get { return this.defaultViewModel; }
         }
@@ -106,37 +103,8 @@ namespace App1.StudentView
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedTo(e);
-            if(e.NavigationMode == NavigationMode.New)
-            {
-                _sessionId = (int)e.Parameter;
-                defaultViewModel = new StudentStartViewModel(DataManager.shared().getStudySessionFromId(_sessionId));
-                this.DataContext = defaultViewModel;
-                _timer = new DispatcherTimer();
-                _timer.Tick += _timer_Tick;
-                _timer.Interval = new TimeSpan(0, 0, 1);
-                Task.Run(() => CallStartTime(_sessionId));
-                _timer.Start();
-            }
+            _sessionId = (int)e.Parameter;
         }
-
-        private void _timer_Tick(object sender, object e)
-        {
-            if (defaultViewModel.Seconds > 0)
-            {
-                defaultViewModel.Seconds -= 1;
-            }
-            else
-            {
-                _timer.Stop();
-            }
-        }
-
-        private async Task CallStartTime(int id) {
-            StartModel model = new StartModel();
-            model.SessionId = _sessionId;
-            await RequestHandler.Shared().putStartTime(model);
-        }
-
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
@@ -145,39 +113,13 @@ namespace App1.StudentView
 
         #endregion
 
-        private async void StartSessionButton_Click(object sender, RoutedEventArgs e)
+        private async void SubmitButton_Click(object sender, RoutedEventArgs e)
         {
-            EndSessionModel model = new EndSessionModel();
-            model.sessionId = _sessionId;
-            await RequestHandler.Shared().putStudentEndSession(model);
-            _timer.Stop();
-
-            Frame.Navigate(typeof(StudentReviewPage), _sessionId);
-        }
-
-        private async void SubmitUpdateTimeButton_Click(object sender, RoutedEventArgs e)
-        {
-            TimerModel model = new TimerModel(defaultViewModel.IncreaseSeconds, _sessionId, defaultViewModel.Session.StudentId);
-            await RequestHandler.Shared().putStudentUpdateTimer(model);
-            defaultViewModel.Seconds += defaultViewModel.IncreaseSeconds;
-            defaultViewModel.IncreaseSeconds = 0;
-        }
-
-        private void DecreaseTimeButton_Click(object sender, RoutedEventArgs e)
-        {
-            if(defaultViewModel.IncreaseSeconds > 600)
-            {
-                defaultViewModel.IncreaseSeconds -= 10 * 60;
-            }
-            else if(defaultViewModel.IncreaseSeconds > 0)
-            {
-                defaultViewModel.IncreaseSeconds = 0;
-            }
-        }
-
-        private void IncreaseTimeButton_Click(object sender, RoutedEventArgs e)
-        {
-            defaultViewModel.IncreaseSeconds += 10 * 60;
+            ReviewModel model = new ReviewModel();
+            model.SessionId = _sessionId;
+            model.ReviewScore = (int)defaultViewModel.ReviewScore;
+            await RequestHandler.Shared().putStudentReview(model);
+            Frame.Navigate(typeof(StudySessionPage));
         }
     }
 }

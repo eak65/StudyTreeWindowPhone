@@ -129,11 +129,21 @@ namespace App1.StudentView
 
         private void Grid_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            Border b = (sender as Grid).Parent as Border;
-            PrelimTutorVM t = b.DataContext as PrelimTutorVM;
+            Grid b = sender as Grid;
+            PrelimTutorVM tutorVM = b.DataContext as PrelimTutorVM;
+            PreliminaryTutor t;
+            if(tutorVM != null)
+            {
+                t = tutorVM.Tutor;
+            }
+            else
+            {
+                DetailStudentStudySessionViewModel vm = b.DataContext as DetailStudentStudySessionViewModel;
+                t = vm.ActiveTutor;
+            }
             Dictionary<String, int> param = new Dictionary<string, int>();
             param.Add("SessionId", _session.StudySessionId);
-            param.Add("TutorId", t.Tutor.TutorId);
+            param.Add("TutorId", t.TutorId);
             param.Add("isTutorChat", 0);
             Frame.Navigate(typeof(ChatPage), param);
         }
@@ -158,6 +168,7 @@ namespace App1.StudentView
                     AcceptModel model = new AcceptModel(tutor.TutorId, _session.StudentId, _session.StudySessionId);
                     await RequestHandler.Shared().putStudentAccept(model);
                     defaultViewModel.ActiveTutor = tutor;
+                    _session.ActiveTutor = tutor;
                     defaultViewModel.PreliminaryTutors.RemoveAt(_session.PreliminaryTutors.IndexOf(tutor));
                     _activeTutorStack.Visibility = Visibility.Visible;
                 }

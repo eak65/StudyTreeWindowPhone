@@ -9,8 +9,6 @@
       
     xmlns:data="using:HubApp1.Data"
 
-    d:DataContext="{Binding Source={d:DesignData Source=../App1.Shared/DataModel/SampleData.json, Type=data:SampleDataSource}}"
-    
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Page.Resources>
@@ -87,7 +85,7 @@
                 </GridView>
             </DataTemplate>
         </HubSection>
-        <HubSection Width="Auto" Header="Account">
+        <HubSection DataContext="{Binding Account}" Width="Auto" Header="Account">
             <DataTemplate>
                 <ScrollViewer>
                 <Grid>
@@ -106,15 +104,31 @@
 
                             </Grid.RowDefinitions>
 
-                            <Image Source="Assets/MediumGray.png" Grid.Row="0" Width="150" Height="150"/>
-                            <TextBox Grid.Column="1" Grid.Row="1" Name="FirstNameText" PlaceholderText="First Name"/>
-                            <TextBox Grid.Column="1" Grid.Row="2" Name="LastNameText" PlaceholderText="Last Name" />
+                            <Image Source="{Binding ProfilePhotoUri}" Grid.Row="0" Width="150" Height="150"/>
+                            <StackPanel Orientation="Horizontal" Grid.Row="1" d:LayoutOverrides="Height">
+                                <TextBlock x:Name="textBlock" TextWrapping="Wrap" Text="First Name" Style="{StaticResource TitleTextBlockStyle}" VerticalAlignment="Center" Width="87.5466690063476"/>
+                                <TextBox Text="{Binding FirstName}" x:Name="FirstNameText" PlaceholderText="First Name" Margin="12,0,0,0" Width="252" HorizontalAlignment="Right"/>
+                            </StackPanel>
+                            <StackPanel Margin="0,9.833,0,9.167" Orientation="Horizontal" Grid.Row="2" d:LayoutOverrides="Height">
+                                <TextBlock x:Name="textBlock1" TextWrapping="Wrap" Text="Last Name" Style="{StaticResource TitleTextBlockStyle}" VerticalAlignment="Center" Width="87.5466690063476"/>
+                                <TextBox Text="{Binding LastName}" x:Name="LastNameText" PlaceholderText="Last Name" Margin="12,0,0,0" Width="252" HorizontalAlignment="Right" />
+
+                            </StackPanel>
 
                         </Grid>
-                    <TextBox Grid.Row="1" Name="UserNameText" PlaceholderText="User Name"/>
-                    <TextBox Grid.Row="2" Name="EmailText" PlaceholderText="Email"/>
-                    <PasswordBox Grid.Row="3" Name="PassWordText" PlaceholderText="Password" />
-                </Grid>
+                        <StackPanel Margin="0,9.5" Orientation="Horizontal" Grid.Row="1" d:LayoutOverrides="Height">
+                            <TextBlock x:Name="textBlock2" TextWrapping="Wrap" Text="User Name" Style="{StaticResource TitleTextBlockStyle}" VerticalAlignment="Center"/>
+                            <TextBox Text="{Binding UserName}" x:Name="UserNameText" PlaceholderText="User Name" Margin="12,0,1,0" Width="250" HorizontalAlignment="Right"/>
+                        </StackPanel>
+                        <StackPanel Margin="0,9.167,0,9.833" Orientation="Horizontal" Grid.Row="2" d:LayoutOverrides="Height">
+                            <TextBlock x:Name="textBlock3" TextWrapping="Wrap" Text="Email" VerticalAlignment="Center" Style="{StaticResource TitleTextBlockStyle}" Margin="0,8,0,7.167" Width="87.5466690063476"/>
+                            <TextBox Text="{Binding Email}" x:Name="EmailText" PlaceholderText="Email" Margin="12,0,-0.167,0" Width="251" HorizontalAlignment="Right"/>
+                        </StackPanel>
+                        <StackPanel Margin="0,9.833,0,9.5" Orientation="Horizontal" Grid.Row="3" d:LayoutOverrides="Height">
+                            <TextBlock x:Name="textBlock4" TextWrapping="Wrap" Text="Password" Style="{StaticResource TitleTextBlockStyle}" Width="87.5467"/>
+                            <PasswordBox x:Name="PassWordText" PlaceholderText="Password" Margin="12,0,-0.333,0" Width="251" />
+                        </StackPanel>
+                    </Grid>
                 </ScrollViewer>
             </DataTemplate>
         </HubSection>

@@ -44,7 +44,7 @@ namespace App1.StudentView
         
         private void ChatPage_Loaded(object sender, RoutedEventArgs e)
         {
-            if (_allMessages.Count > 0)
+            if (_allMessages.Count > 6)
             {
                 myChat.ScrollIntoView(myChat.Items[_allMessages.Count - 1]);
             }
@@ -101,7 +101,7 @@ namespace App1.StudentView
         private void _allMessages_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             UpdateLayout();
-            if(_allMessages.Count > 0)
+            if(_allMessages.Count > 6)
             {
                 CoreDispatcher dispatcher = CoreWindow.GetForCurrentThread().Dispatcher;
                 if (!dispatcher.HasThreadAccess)

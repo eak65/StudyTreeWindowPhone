@@ -7,8 +7,14 @@ using System.Collections.ObjectModel;
 
 namespace App1.Model.Logic
 {
-    public class User
+    public class User : BaseINPC
     {
+        private String _firstName;
+        private String _lastName;
+        private String _email;
+        private String _userName;
+        private String _profileUri;
+
         public String token;
         public String studentSponserTokenId;
         public IList creditCards;
@@ -16,15 +22,55 @@ namespace App1.Model.Logic
         public int PersonId;
         public int Fee;
         public int appVerionNumber;
-        public String FirstName;
-        public String LastName;
-        public String Email;
+        public String FirstName
+        {
+            get { return _firstName; }
+            set
+            {
+                _firstName = value;
+                NotifyPropertyChanged("FirstName");
+            }
+        }
+        public String LastName
+        {
+            get { return _lastName; }
+            set
+            {
+                _lastName = value;
+                NotifyPropertyChanged("LastName");
+            }
+        }
+        public String Email
+        {
+            get { return _email; }
+            set
+            {
+                _email = value;
+                NotifyPropertyChanged("Email");
+            }
+        }
         public String password;
         public String major;
         public int reviewAverage;
-        public String UserName;
+        public String UserName
+        {
+            get { return _userName; }
+            set
+            {
+                _userName = value;
+                NotifyPropertyChanged("UserName");
+            }
+        }
         public int mobilePhone;
-        public String ProfilePhotoUri;
+        public String ProfilePhotoUri
+        {
+            get { return _profileUri; }
+            set
+            {
+                _profileUri = value;
+                NotifyPropertyChanged("ProfilePhotoUri");
+            }
+        }
         public int notificationBadgeValue;
         public ObservableCollection<Subject> StudentSubjects;
         public ObservableCollection<Subject> TutorSubjects;

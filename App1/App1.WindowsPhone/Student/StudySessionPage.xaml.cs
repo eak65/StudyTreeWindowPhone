@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Graphics.Display;
+using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -41,31 +42,53 @@ namespace App1.StudentView
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
-
-            loadInformation();
-            foreach(StudySession s in dataManager.myself.StudentStudySessions)
-            {
-                if(s.TypeCode != 5)
-                {
-                    _activeSessions.Add(s);
-                }
-            }
-            defaultViewModel.Add("StudySessions", _activeSessions);
             _sessionListView = StudentStudySessionList;
         }
 
         public async Task loadInformation()
         {
-            await RequestHandler.Shared().updateInformation();
-            _activeSessions.Clear();
             foreach (StudySession s in dataManager.myself.StudentStudySessions)
             {
-                if (s.TypeCode != 5)
+                if (s.TypeCode < 3)
                 {
                     _activeSessions.Add(s);
                 }
             }
-            defaultViewModel.Add("StudySessions", _activeSessions);
+
+            if (!defaultViewModel.ContainsKey("StudySessions"))
+                defaultViewModel.Add("StudySessions", _activeSessions);
+            else
+                defaultViewModel["StudySessions"] = _activeSessions;
+            StResponse res = await RequestHandler.Shared().getStudentSessions();
+            reloadSession();
+        }
+
+        private void reloadSession()
+        {
+            try
+            {
+                ObservableCollection<StudySession> _temp = new ObservableCollection<StudySession>();
+                foreach (StudySession s in DataManager.shared().myself.StudentStudySessions)
+                {
+                    if (s.TypeCode < 3)
+                    {
+                        _temp.Add(s);
+                    }
+                }
+
+                _activeSessions = _temp;
+                //CoreDispatcher dispatcher = CoreWindow.GetForCurrentThread().Dispatcher;
+                //if (!dispatcher.HasThreadAccess)
+                //{
+                //    Task.Run(() => Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => { _activeSessions.Clear(); }));
+                //    Task.Run(() => Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => { _activeSessions.Concat(_temp); }));
+                //}
+                if (!defaultViewModel.ContainsKey("StudySessions"))
+                    defaultViewModel.Add("StudySessions", _activeSessions);
+                else
+                    defaultViewModel["StudySessions"] = _activeSessions;
+            }
+            catch (Exception e) { }
         }
 
         /// <summary>
@@ -129,7 +152,8 @@ namespace App1.StudentView
         /// handlers that cannot cancel the navigation request.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            this.navigationHelper.OnNavigatedTo(e);         
+            this.navigationHelper.OnNavigatedTo(e);
+            Task.Run(() => loadInformation());       
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)

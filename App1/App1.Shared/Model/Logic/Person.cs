@@ -10,7 +10,7 @@ namespace App1.Model.Logic
         private TreeMessage _lastMessage;
         private ObservableCollection<StudySession> _studySesssions;
 
-        public ObservableCollection<TreeMessage> Messages;
+        public ObservableCollection<TreeMessage> Messages = new ObservableCollection<TreeMessage>();
         public double PersonId;
         public String FirstName { get; set; }
         public String LastName;

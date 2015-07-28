@@ -50,7 +50,7 @@
                             <StackPanel Visibility="{Binding ActiveTutorVisibility, Mode=OneWay}" x:Name="ActiveTutorStackPanel" Height="140" Margin="0,0,0,-396" VerticalAlignment="Bottom" Loaded="ActiveTutorStackPanel_Loaded">
                                 <Border Margin="0,0,-197,0" Background="#FF646464" Height="37" CornerRadius="5" BorderThickness="1" >
                                     <TextBlock x:Name="textBlock" TextWrapping="Wrap" Style="{StaticResource TitleTextBlockStyle}" SelectionHighlightColor="#FF7F68B4" Height="46" Margin="8,8,-0.333,0" Foreground="Black">
-                            			<Run Text="Active Tutor"/>
+                            			<Run Text="Active Tutor" Foreground="White"/>
                             			<Run/>
                                     </TextBlock>
                                 </Border>
@@ -72,7 +72,7 @@
                 <StackPanel Margin="0,0,-0.167,0">
                     <Border Margin="6,6,6,12" Background="#FF646464" Height="37" CornerRadius="5" BorderThickness="1" d:LayoutOverrides="Height, TopPosition, BottomPosition" >
                         <TextBlock x:Name="textBlock" TextWrapping="Wrap" Style="{StaticResource TitleTextBlockStyle}" SelectionHighlightColor="#FF7F68B4" Margin="8.167,0,-0.5,-1.167" Foreground="Black" VerticalAlignment="Center">
-            				<Run Text="Preliminary Tutor"/>
+            				<Run Text="Preliminary Tutor" Foreground="White"/>
             				<Run/>
                         </TextBlock>
                     </Border>

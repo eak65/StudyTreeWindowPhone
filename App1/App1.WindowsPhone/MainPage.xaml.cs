@@ -28,14 +28,14 @@ namespace App1
 
         public MainPage()
         {
-           this.InitializeComponent();
-           this.NavigationCacheMode = NavigationCacheMode.Required;
+            this.InitializeComponent();
+            this.NavigationCacheMode = NavigationCacheMode.Required;
 
-           this.navigationHelper = new NavigationHelper(this);
-           this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
-           this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
-           this.Background = new SolidColorBrush(Color.FromArgb(255, 26, 188, 156));
-
+            this.navigationHelper = new NavigationHelper(this);
+            this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
+            this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
+            this.Background = new SolidColorBrush(Color.FromArgb(255, 26, 188, 156));
+            this.defaultViewModel["Account"] = DataManager.shared().myself;
         }
 
         public async Task loadUniversity()
